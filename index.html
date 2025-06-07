@@ -3,213 +3,973 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TESTEVENT 2024 On-Demand</title>
-    <script src="https://zestatic.zoom.us/zoomevents-vod-sdk/0.1.3/vod_embed_sdk/zoomVodEmbed.js"></script>
+    <title>Event Lobby Customizer</title>
     <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(90deg, #0096FF 0%, #00CCFF 100%);
-            color: #333;
+            box-sizing: border-box;
         }
 
-        .header {
-            background-color: rgba(225, 235, 255, 0.8);
-            padding: 12px 30px;
-            border-radius: 50px;
-            margin: 20px;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-reset {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-reset:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-export {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background: #2563eb;
+        }
+
+        .tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .tab:hover {
+            background: #f3f4f6;
+        }
+
+        .tab.active {
+            background: #eff6ff;
+            color: #2563eb;
+            border-right: 3px solid #2563eb;
+        }
+
+        .tab-content {
+            padding: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .color-input-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .preview-area {
+            flex: 1;
+            overflow-y: auto;
+            background: white;
+        }
+
+        .preview-header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #0066CC;
+        .preview-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
         }
 
-        .nav {
-            display: flex;
-            gap: 20px;
+        .preview-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
         }
 
-        .nav a {
-            text-decoration: none;
-            color: #333;
+        .toggle-preview {
+            padding: 10px 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
             font-weight: 500;
         }
 
-        .cta-button {
-            background-color: #0066FF;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 25px;
-            font-weight: bold;
-            cursor: pointer;
+        .toggle-preview:hover {
+            background: #2563eb;
         }
 
-        .main-container {
-            background-color: white;
-            border-radius: 30px;
-            margin: 20px 50px;
-            padding: 30px 40px;
+        .preview-content {
+            padding: 0;
         }
 
-        h1 {
-            font-size: 36px;
-            margin-bottom: 40px;
+        /* Preview Components */
+        .preview-lobby {
+            min-height: 100vh;
+            background: #f8fafc;
         }
 
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+        .preview-lobby-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: var(--header-bg, #667eea);
+            color: var(--header-text, white);
         }
 
-        .video-card {
-            background-color: #f8f8f8;
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .video-container {
-            width: 100%;
-            height: 200px;
-            margin-bottom: 15px;
-        }
-
-        .region-title {
+        .preview-logo {
             font-size: 24px;
             font-weight: bold;
-            margin: 0;
-            margin-bottom: 10px;
+            color: var(--logo-color, white);
         }
 
-        .region-text {
-            margin-bottom: 15px;
-            line-height: 1.4;
+        .preview-header-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
         }
 
-        .sign-in-link {
-            color: #0066FF;
-            text-decoration: none;
-            font-weight: bold;
+        .preview-navigation {
+            background: var(--nav-bg, white);
+            border-bottom: 1px solid var(--nav-border, #e5e7eb);
+            padding: 0 40px;
+            display: flex;
+            gap: 30px;
         }
 
-        .watch-button {
-            display: inline-block;
-            background-color: transparent;
-            color: #0066FF;
-            font-weight: bold;
-            border: none;
-            padding: 10px 0;
+        .preview-nav-tab {
+            padding: 15px 0;
+            font-weight: 600;
+            color: var(--nav-text, #6b7280);
+            border-bottom: 3px solid transparent;
             cursor: pointer;
-            text-decoration: none;
         }
 
-        @media (max-width: 1200px) {
-            .video-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .preview-nav-tab.active {
+            color: var(--nav-active, #667eea);
+            border-bottom-color: var(--nav-active, #667eea);
+        }
+
+        .preview-masthead {
+            background: var(--masthead-bg, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+            padding: var(--masthead-padding, 60px 40px);
+            text-align: center;
+            color: var(--masthead-text, white);
+        }
+
+        .preview-masthead-title {
+            font-size: var(--masthead-title-size, 48px);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .preview-masthead-subtitle {
+            font-size: var(--masthead-subtitle-size, 20px);
+            opacity: 0.9;
+        }
+
+        .preview-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .preview-section {
+            margin-bottom: var(--section-spacing, 50px);
+        }
+
+        .preview-section-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #1f2937;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: var(--grid-columns, repeat(auto-fit, minmax(400px, 1fr)));
+            gap: var(--grid-gap, 25px);
+        }
+
+        .preview-session-card {
+            background: var(--card-bg, white);
+            border-radius: var(--card-radius, 12px);
+            padding: var(--card-padding, 25px);
+            box-shadow: 0 4px 20px var(--card-shadow, rgba(0,0,0,0.08));
+            position: relative;
+        }
+
+        .preview-session-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            background: #fee2e2;
+            color: #dc2626;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .preview-session-time {
+            font-size: 14px;
+            color: var(--card-meta, #6b7280);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .preview-session-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: var(--card-title, #1f2937);
+        }
+
+        .preview-session-speaker {
+            font-size: 14px;
+            color: var(--card-meta, #6b7280);
+            margin-bottom: 15px;
+        }
+
+        .preview-session-description {
+            font-size: 14px;
+            color: var(--card-text, #4b5563);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .preview-session-button {
+            width: 100%;
+            padding: 12px 24px;
+            background: var(--button-bg, #667eea);
+            color: var(--button-text, white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .preview-speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .preview-speaker-card {
+            background: var(--speaker-bg, white);
+            border-radius: var(--speaker-radius, 12px);
+            padding: var(--speaker-padding, 25px);
+            text-align: center;
+            box-shadow: 0 4px 20px var(--speaker-shadow, rgba(0,0,0,0.08));
+        }
+
+        .preview-speaker-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--speaker-avatar, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .preview-speaker-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--speaker-name, #1f2937);
+        }
+
+        .preview-speaker-title {
+            font-size: 14px;
+            color: var(--speaker-title, #6b7280);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            border: none;
         }
 
         @media (max-width: 768px) {
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-            .header {
+            .container {
                 flex-direction: column;
-                gap: 15px;
-                padding: 15px;
             }
-            .main-container {
-                margin: 20px;
-                padding: 20px;
+            
+            .sidebar {
+                width: 100%;
+                height: 50vh;
+            }
+            
+            .preview-area {
+                height: 50vh;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">TESTEVENT</div>
-        <div class="nav">
-            <a href="https://zoomtopia.com/?#home-zoomtopia-on-demand">On-demand</a>
-            <a href="#">Newsroom</a>
-            <a href="#">Partner Connect</a>
-            <a href="#">Sponsors</a>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">Lobby Customizer</h2>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-reset" onclick="resetToDefaults()">🔄 Reset</button>
+                    <button class="btn btn-export" onclick="exportCSS()">📥 Export CSS</button>
+                    <button class="btn btn-export" onclick="exportJSON()">📁 Export JSON</button>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('header')" data-tab="header">🎨 Header</button>
+                    <button class="tab" onclick="switchTab('masthead')" data-tab="masthead">🏆 Masthead</button>
+                    <button class="tab" onclick="switchTab('navigation')" data-tab="navigation">📋 Navigation</button>
+                    <button class="tab" onclick="switchTab('sessionCard')" data-tab="sessionCard">📄 Session Cards</button>
+                    <button class="tab" onclick="switchTab('layout')" data-tab="layout">📐 Layout</button>
+                    <button class="tab" onclick="switchTab('speakerCard')" data-tab="speakerCard">👥 Speaker Cards</button>
+                    <button class="tab" onclick="switchTab('colors')" data-tab="colors">🎨 Colors</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tabContent">
+                <!-- Tab content will be dynamically generated -->
+            </div>
         </div>
-        <button class="cta-button">Save the date</button>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="main-container">
-        <h1><a href="#" class="sign-in-link">Watch TESTEVENT 2024 on-demand</a></h1>
-        
-        <div class="video-grid">
-            <!-- Americas Video -->
-            <div class="video-card">
-                <div class="video-container">
-                    <script src="https://zestatic.zoom.us/zoomevents-vod-sdk/0.1.4/vod_embed_sdk/zoomVodEmbed.js"></script>
-<div class="zoom-embed" data-channel-id="fslif7QFR1-jBhlitJejyA" data-embed-option="inline" data-domain="https://events.zoom.us" style="width: 100%; height: 100%; max-width: 560px; max-height: 315px; overflow: hidden;"><img src="https://file.zoom.us/file/kX1uFYWMR2KQ0Iw4D1OMJA/attach/preview/1920x1920?jwt=eyJ6bV9za20iOiJ6bV9vMm0iLCJ0eXAiOiJKV1QiLCJrIjoiU1Vtd2VJZXYiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJ6ZnMiLCJ0b2tlbklkIjoidjZOTjR1U0dTNW1iTzVEaXQ3MkFodyIsImFwcE5hbWUiOiJvbnpvb20iLCJpc3MiOiJvbnpvb20iLCJwZXJtaXNzaW9uIjoie1wiYWN0aW9uXCI6XCJyZWFkXCIsXCJlbnRpdHlcIjp7XCJjb3VudFwiOjAsXCJmaWxlSWRcIjpcImtYMXVGWVdNUjJLUTBJdzREMU9NSkFcIixcIm1heFNpemVcIjowfX0iLCJleHAiOjE3NDg1NjEyNTgsInRva2VuVHlwZSI6InByZXNpZ25Ub2tlbiIsImlhdCI6MTc0Nzk1NjQ1OH0.MhdZjWwOT91-B3Iv3uk2EfDTOd7vzpO0ECS-yI0d7ZcZ6SrfS6LK6PlYtM24HhLKQfwb3QHLp50slYQfJxBgjg" style="width:100%;"></div>
+
+        <div class="preview-area">
+            <div class="preview-header">
+                <div>
+                    <div class="preview-title">Live Preview</div>
+                    <div class="preview-subtitle">Changes update in real-time</div>
                 </div>
-                <h3 class="region-title">Americas</h3>
-                <p class="region-text">Video on-demand from Zoom events can embed single or multiple videos anywhere you want. Hosts can use registration and survey to collect user info, and get metrics from Pardot. </p>
-                <a href="https://events.zoom.us/evj/AiIsNW1rzHQZnGF2cog0V5PQNvCGi-tRcNBRIreI6cVdFOYo2QR5~A1dLQvAML0MYNyUw-UnzDCKI_Sw" class="watch-button">Watch now</a>
+                <button class="toggle-preview" onclick="toggleFullPreview()">👁️ Toggle View</button>
             </div>
-            
-            <!-- APAC Video -->
-            <div class="video-card">
-                <div class="video-container">
-                    <script src="https://zestatic.zoom.us/zoomevents-vod-sdk/0.1.3/vod_embed_sdk/zoomVodEmbed.js"></script>
-<div class="zoom-embed" data-channel-id="d3oF0ojATAaZuh2TI5tYrA" data-embed-option="popover" data-embed-display="thumbnail" data-domain="https://events.zoom.us" style="width: 100%; height: 100%; max-width: 560px; max-height: 315px; overflow: hidden;"><img src="https://file-paa.zoom.us/UKrmMac3RM2zI-h8s3wrAA/Mi4yLvd0PNyzOBIh75sF0dfeynKEv6OlzyIaX4HvjFZLNb2D/people%20working%20on%20laptop%2C%20render%20it%20in%20ghibli%20style.png?attachType=preview&amp;subType=1920x1920" style="width:100%;"></div>
-                </div>
-                <h3 class="region-title">APAC</h3>
-                <p class="region-text">Video on demand leverages Zoom's cloud+CDN, supports CC, transcription, rich language from Zoom.</p>
-                <a href="#" class="watch-button">Watch now</a>
-            </div>
-            
-            <!-- EMEA Video -->
-            <div class="video-card">
-                <div class="video-container">
-                    <script src="https://zestatic.zoom.us/zoomevents-vod-sdk/0.1.4/vod_embed_sdk/zoomVodEmbed.js"></script>
-<div class="zoom-embed" data-channel-id="d3oF0ojATAaZuh2TI5tYrA" data-embed-option="popover" data-embed-display="thumbnail" data-domain="https://events.zoom.us" style="width: 100%; height: 100%; max-width: 560px; max-height: 315px; overflow: hidden;"><img src="https://file-paa.zoom.us/UKrmMac3RM2zI-h8s3wrAA/Mi4zLi-W-FajDGsZ-LhcioR1bah-aF4S_ZFvdiqSd3AElgEe/people%20working%20on%20laptop%2C%20render%20it%20in%20ghibli%20style.png?attachType=preview&amp;subType=1920x1920" style="width:100%;"></div>
-                </div>
-                <h3 class="region-title">EMEA</h3>
-                <p class="region-text">Hosts get rich style options (inline, popover,responsive, fixed size, text).</p>
-                <a href="#" class="watch-button">Watch now</a>
-            </div>
-            
-            <!-- Japan Video -->
-            <div class="video-card">
-                <div class="video-container">
-                    <script src="https://zestatic.zoom.us/zoomevents-vod-sdk/0.1.4/vod_embed_sdk/zoomVodEmbed.js"></script>
-<div class="zoom-embed" data-channel-id="Nxl48KZbQ2-b_2bBBBWycA" data-embed-option="inline" data-domain="https://events.zoom.us" style="width: 100%; height: 100%; max-width: 560px; max-height: 315px; overflow: hidden;"><img src="https://file.zoom.us/file/q9K_6GzSQZGELgCJYSz7xQ/attach/preview/1920x1920?jwt=eyJ6bV9za20iOiJ6bV9vMm0iLCJ0eXAiOiJKV1QiLCJrIjoiU1Vtd2VJZXYiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJ6ZnMiLCJ0b2tlbklkIjoiRlJSSlRZa2RTd1N4OXV6ZWNMZmhoZyIsImFwcE5hbWUiOiJvbnpvb20iLCJpc3MiOiJvbnpvb20iLCJwZXJtaXNzaW9uIjoie1wiYWN0aW9uXCI6XCJyZWFkXCIsXCJlbnRpdHlcIjp7XCJjb3VudFwiOjAsXCJmaWxlSWRcIjpcInE5S182R3pTUVpHRUxnQ0pZU3o3eFFcIixcIm1heFNpemVcIjowfX0iLCJleHAiOjE3NDg1NjE0MzksInRva2VuVHlwZSI6InByZXNpZ25Ub2tlbiIsImlhdCI6MTc0Nzk1NjYzOX0.WfBoLRIDjBr-gpnBTNjAXdXFrq7LfMGseXck5s7qt9Huch4ECHeNkTQdSq4T7toWbEQsD1PTYctMoXpx7kK4zQ" style="width:100%;"></div>
+
+            <div class="preview-content">
+                <div class="preview-lobby">
+                    <!-- Header -->
+                    <div class="preview-lobby-header" id="previewHeader">
+                        <div class="preview-logo" id="previewLogo">TechConnect 2024</div>
+                        <div class="preview-header-info">
+                            <div>🔴 3 sessions live now</div>
+                            <div>Welcome, Alex Chen</div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="preview-navigation" id="previewNavigation">
+                        <div class="preview-nav-tab active">Lobby</div>
+                        <div class="preview-nav-tab">My Agenda</div>
+                        <div class="preview-nav-tab">All Sessions</div>
+                        <div class="preview-nav-tab">Speakers</div>
+                    </div>
+
+                    <!-- Masthead -->
+                    <div class="preview-masthead" id="previewMasthead">
+                        <div class="preview-masthead-title" id="previewMastheadTitle">Welcome to TechConnect 2024</div>
+                        <div class="preview-masthead-subtitle" id="previewMastheadSubtitle">The Future of Technology - Two Days of Innovation and Discovery</div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="preview-content">
+                        <div class="preview-section">
+                            <h2 class="preview-section-title">Live Sessions</h2>
+                            <div class="preview-grid" id="previewGrid">
+                                <div class="preview-session-card" id="previewSessionCard">
+                                    <div class="preview-session-status">LIVE</div>
+                                    <div class="preview-session-time">10:00 AM - 11:00 AM</div>
+                                    <h3 class="preview-session-title">Neural Networks & Deep Learning Frontiers</h3>
+                                    <div class="preview-session-speaker">👤 Dr. Sarah Chen, MIT AI Lab</div>
+                                    <div class="preview-session-description">Exploring cutting-edge neural architecture and their applications in autonomous systems.</div>
+                                    <button class="preview-session-button">Join Session</button>
+                                </div>
+
+                                <div class="preview-session-card">
+                                    <div class="preview-session-time">12:00 PM - 1:00 PM</div>
+                                    <h3 class="preview-session-title">Quantum Computing Applications</h3>
+                                    <div class="preview-session-speaker">👤 Prof. Michael Zhang, IBM Research</div>
+                                    <div class="preview-session-description">Real-world quantum computing applications in cryptography and optimization.</div>
+                                    <button class="preview-session-button" style="background: #f3f4f6; color: #374151;">Starts in 1 hour</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="preview-section">
+                            <h2 class="preview-section-title">Featured Speakers</h2>
+                            <div class="preview-speakers-grid">
+                                <div class="preview-speaker-card" id="previewSpeakerCard">
+                                    <div class="preview-speaker-avatar">S</div>
+                                    <div class="preview-speaker-name">Dr. Sarah Chen</div>
+                                    <div class="preview-speaker-title">AI Research Director, MIT</div>
+                                </div>
+
+                                <div class="preview-speaker-card">
+                                    <div class="preview-speaker-avatar">M</div>
+                                    <div class="preview-speaker-name">Prof. Michael Zhang</div>
+                                    <div class="preview-speaker-title">Quantum Researcher, IBM</div>
+                                </div>
+
+                                <div class="preview-speaker-card">
+                                    <div class="preview-speaker-avatar">E</div>
+                                    <div class="preview-speaker-name">Elena Rodriguez</div>
+                                    <div class="preview-speaker-title">Security Lead, Ethereum</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <h3 class="region-title">Japan</h3>
-                <p class="region-text">Metrics includes unique viewers, watch time by video, registrant info, survey results.</p>
-                <a href="#" class="watch-button">Watch now</a>
             </div>
         </div>
     </div>
-    
-    <!-- Partner Connect Section -->
-    <div class="main-container" style="margin-top: 40px;">
-        <div style="display: flex; flex-direction: row; align-items: center; gap: 30px;">
-            <div style="flex: 1;">
-                <h2 style="font-size: 32px; margin-bottom: 20px;">TESTEVENT Partner Connect</h2>
-                <p style="font-size: 18px; line-height: 1.5; margin-bottom: 25px;">Visit <a href="https://events.zoom.us/evj/AtHXo_a_oaJjIbptRpDSOCnsMIFKn8tO8daUQLN5B9BkEnr3wyr9~A1dLQvAML0MYNyUw-UnzDCKI_Sw" style="color: #0066FF; text-decoration: none; font-weight: bold;">the Zoom Partner Portal</a> to watch the recording on-demand of the TESTEVENT Partner Connect Session.</p>
-            </div>
-            <div style="flex: 1;">
-                <script src="https://zestatic.zoom.us/zoomevents-vod-sdk/0.1.4/vod_embed_sdk/zoomVodEmbed.js"></script>
-<div class="zoom-embed" data-channel-id="Iyrh0K7hTVeBUj0tCM4_dw" data-embed-option="popover" data-embed-display="thumbnail" data-domain="https://events.zoom.us" style="width: 100%; height: 100%; max-width: 1000px; max-height: 600px; overflow: hidden;"><img src="https://file.zoom.us/file/I3E_7Gy1RUWez3e1eEYklg/attach/preview/1920x1920?jwt=eyJ6bV9za20iOiJ6bV9vMm0iLCJ0eXAiOiJKV1QiLCJrIjoiU1Vtd2VJZXYiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJ6ZnMiLCJ0b2tlbklkIjoiQXl3UHEyXzFUbU9uelRGUW8tSFY3ZyIsImFwcE5hbWUiOiJvbnpvb20iLCJpc3MiOiJvbnpvb20iLCJwZXJtaXNzaW9uIjoie1wiYWN0aW9uXCI6XCJyZWFkXCIsXCJlbnRpdHlcIjp7XCJjb3VudFwiOjAsXCJmaWxlSWRcIjpcIkkzRV83R3kxUlVXZXozZTFlRVlrbGdcIixcIm1heFNpemVcIjowfX0iLCJleHAiOjE3NDg0NTMyMTIsInRva2VuVHlwZSI6InByZXNpZ25Ub2tlbiIsImlhdCI6MTc0Nzg0ODQxMn0.M2fTTRZUlRbomlNKcm8SLdKqQLSHeup-Rah0zjISqL9CRjbSG8VjXjwBF6eHZBqrZ3RJUkCNn0zjtDrQsXp8og" style="width:100%;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    <script>
+        // Configuration object
+        let config = {
+            header: {
+                backgroundColor: '#667eea',
+                logoText: 'TechConnect 2024',
+                logoColor: '#ffffff',
+                textColor: '#ffffff'
+            },
+            masthead: {
+                backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                titleText: 'Welcome to TechConnect 2024',
+                subtitleText: 'The Future of Technology - Two Days of Innovation and Discovery',
+                textColor: '#ffffff',
+                titleSize: '48px',
+                subtitleSize: '20px'
+            },
+            navigation: {
+                backgroundColor: '#ffffff',
+                textColor: '#6b7280',
+                activeColor: '#667eea',
+                borderColor: '#e5e7eb'
+            },
+            sessionCard: {
+                backgroundColor: '#ffffff',
+                borderRadius: '12px',
+                shadowColor: 'rgba(0,0,0,0.08)',
+                padding: '25px',
+                titleColor: '#1f2937',
+                textColor: '#4b5563',
+                metaColor: '#6b7280',
+                buttonColor: '#667eea',
+                buttonTextColor: '#ffffff'
+            },
+            layout: {
+                gridGap: '25px',
+                gridColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+                sectionSpacing: '50px'
+            },
+            speakerCard: {
+                backgroundColor: '#ffffff',
+                borderRadius: '12px',
+                padding: '25px',
+                avatarColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                nameColor: '#1f2937',
+                titleColor: '#6b7280',
+                shadowColor: 'rgba(0,0,0,0.08)'
+            },
+            colors: {
+                primary: '#667eea',
+                secondary: '#764ba2',
+                success: '#10b981',
+                warning: '#fbbf24',
+                error: '#ef4444'
+            }
+        };
+
+        let currentTab = 'header';
+        let isFullPreview = false;
+
+        // Tab configurations
+        const tabConfigs = {
+            header: [
+                { type: 'color', key: 'backgroundColor', label: 'Background Color' },
+                { type: 'text', key: 'logoText', label: 'Logo Text' },
+                { type: 'color', key: 'logoColor', label: 'Logo Color' },
+                { type: 'color', key: 'textColor', label: 'Text Color' }
+            ],
+            masthead: [
+                { type: 'text', key: 'backgroundImage', label: 'Background (CSS)' },
+                { type: 'text', key: 'titleText', label: 'Title Text' },
+                { type: 'text', key: 'subtitleText', label: 'Subtitle Text' },
+                { type: 'color', key: 'textColor', label: 'Text Color' },
+                { type: 'slider', key: 'titleSize', label: 'Title Size', min: 24, max: 72, unit: 'px' },
+                { type: 'slider', key: 'subtitleSize', label: 'Subtitle Size', min: 14, max: 32, unit: 'px' }
+            ],
+            navigation: [
+                { type: 'color', key: 'backgroundColor', label: 'Background Color' },
+                { type: 'color', key: 'textColor', label: 'Text Color' },
+                { type: 'color', key: 'activeColor', label: 'Active Tab Color' },
+                { type: 'color', key: 'borderColor', label: 'Border Color' }
+            ],
+            sessionCard: [
+                { type: 'color', key: 'backgroundColor', label: 'Background Color' },
+                { type: 'slider', key: 'borderRadius', label: 'Border Radius', min: 0, max: 24, unit: 'px' },
+                { type: 'text', key: 'shadowColor', label: 'Shadow Color' },
+                { type: 'color', key: 'titleColor', label: 'Title Color' },
+                { type: 'color', key: 'textColor', label: 'Text Color' },
+                { type: 'color', key: 'metaColor', label: 'Meta Text Color' },
+                { type: 'color', key: 'buttonColor', label: 'Button Color' },
+                { type: 'color', key: 'buttonTextColor', label: 'Button Text Color' }
+            ],
+            layout: [
+                { type: 'slider', key: 'gridGap', label: 'Grid Gap', min: 10, max: 50, unit: 'px' },
+                { type: 'text', key: 'gridColumns', label: 'Grid Columns (CSS)' },
+                { type: 'slider', key: 'sectionSpacing', label: 'Section Spacing', min: 20, max: 100, unit: 'px' }
+            ],
+            speakerCard: [
+                { type: 'color', key: 'backgroundColor', label: 'Background Color' },
+                { type: 'slider', key: 'borderRadius', label: 'Border Radius', min: 0, max: 24, unit: 'px' },
+                { type: 'text', key: 'avatarColor', label: 'Avatar Background (CSS)' },
+                { type: 'color', key: 'nameColor', label: 'Name Color' },
+                { type: 'color', key: 'titleColor', label: 'Title Color' },
+                { type: 'text', key: 'shadowColor', label: 'Shadow Color' }
+            ],
+            colors: [
+                { type: 'color', key: 'primary', label: 'Primary Color' },
+                { type: 'color', key: 'secondary', label: 'Secondary Color' },
+                { type: 'color', key: 'success', label: 'Success Color' },
+                { type: 'color', key: 'warning', label: 'Warning Color' },
+                { type: 'color', key: 'error', label: 'Error Color' }
+            ]
+        };
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Update tab content
+            updateTabContent();
+        }
+
+        function updateTabContent() {
+            const container = document.getElementById('tabContent');
+            const tabConfig = tabConfigs[currentTab];
+            
+            if (!tabConfig) return;
+            
+            let html = `<h3 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #1f2937; text-transform: capitalize;">${currentTab} Settings</h3>`;
+            
+            tabConfig.forEach(control => {
+                const value = config[currentTab][control.key];
+                
+                html += `<div class="control-group">`;
+                html += `<label class="control-label">${control.label}</label>`;
+                
+                if (control.type === 'color') {
+                    html += `
+                        <div class="color-input-group">
+                            <input type="color" class="color-picker" value="${value}" 
+                                   onchange="updateConfig('${currentTab}', '${control.key}', this.value)">
+                            <input type="text" class="control-input" value="${value}" 
+                                   onchange="updateConfig('${currentTab}', '${control.key}', this.value)"
+                                   placeholder="#000000">
+                        </div>
+                    `;
+                } else if (control.type === 'text') {
+                    html += `
+                        <input type="text" class="control-input" value="${value}" 
+                               onchange="updateConfig('${currentTab}', '${control.key}', this.value)"
+                               placeholder="Enter value">
+                    `;
+                } else if (control.type === 'slider') {
+                    const numValue = parseInt(value) || control.min;
+                    html += `
+                        <div style="margin-bottom: 8px;">
+                            <span style="font-size: 12px; color: #6b7280;">${numValue}${control.unit || ''}</span>
+                        </div>
+                        <input type="range" class="slider" 
+                               min="${control.min}" max="${control.max}" value="${numValue}"
+                               oninput="updateConfig('${currentTab}', '${control.key}', this.value + '${control.unit || ''}')">
+                    `;
+                }
+                
+                html += `</div>`;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function updateConfig(section, key, value) {
+            config[section][key] = value;
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const root = document.documentElement;
+            
+            // Update CSS variables
+            root.style.setProperty('--header-bg', config.header.backgroundColor);
+            root.style.setProperty('--header-text', config.header.textColor);
+            root.style.setProperty('--logo-color', config.header.logoColor);
+            root.style.setProperty('--nav-bg', config.navigation.backgroundColor);
+            root.style.setProperty('--nav-text', config.navigation.textColor);
+            root.style.setProperty('--nav-active', config.navigation.activeColor);
+            root.style.setProperty('--nav-border', config.navigation.borderColor);
+            root.style.setProperty('--masthead-bg', config.masthead.backgroundImage);
+            root.style.setProperty('--masthead-text', config.masthead.textColor);
+            root.style.setProperty('--masthead-title-size', config.masthead.titleSize);
+            root.style.setProperty('--masthead-subtitle-size', config.masthead.subtitleSize);
+            root.style.setProperty('--card-bg', config.sessionCard.backgroundColor);
+            root.style.setProperty('--card-radius', config.sessionCard.borderRadius);
+            root.style.setProperty('--card-shadow', config.sessionCard.shadowColor);
+            root.style.setProperty('--card-padding', config.sessionCard.padding);
+            root.style.setProperty('--card-title', config.sessionCard.titleColor);
+            root.style.setProperty('--card-text', config.sessionCard.textColor);
+            root.style.setProperty('--card-meta', config.sessionCard.metaColor);
+            root.style.setProperty('--button-bg', config.sessionCard.buttonColor);
+            root.style.setProperty('--button-text', config.sessionCard.buttonTextColor);
+            root.style.setProperty('--grid-columns', config.layout.gridColumns);
+            root.style.setProperty('--grid-gap', config.layout.gridGap);
+            root.style.setProperty('--section-spacing', config.layout.sectionSpacing);
+            root.style.setProperty('--speaker-bg', config.speakerCard.backgroundColor);
+            root.style.setProperty('--speaker-radius', config.speakerCard.borderRadius);
+            root.style.setProperty('--speaker-padding', config.speakerCard.padding);
+            root.style.setProperty('--speaker-avatar', config.speakerCard.avatarColor);
+            root.style.setProperty('--speaker-name', config.speakerCard.nameColor);
+            root.style.setProperty('--speaker-title', config.speakerCard.titleColor);
+            root.style.setProperty('--speaker-shadow', config.speakerCard.shadowColor);
+            
+            // Update text content
+            document.getElementById('previewLogo').textContent = config.header.logoText;
+            document.getElementById('previewMastheadTitle').textContent = config.masthead.titleText;
+            document.getElementById('previewMastheadSubtitle').textContent = config.masthead.subtitleText;
+        }
+
+        function resetToDefaults() {
+            config = {
+                header: {
+                    backgroundColor: '#667eea',
+                    logoText: 'TechConnect 2024',
+                    logoColor: '#ffffff',
+                    textColor: '#ffffff'
+                },
+                masthead: {
+                    backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    titleText: 'Welcome to TechConnect 2024',
+                    subtitleText: 'The Future of Technology - Two Days of Innovation and Discovery',
+                    textColor: '#ffffff',
+                    titleSize: '48px',
+                    subtitleSize: '20px'
+                },
+                navigation: {
+                    backgroundColor: '#ffffff',
+                    textColor: '#6b7280',
+                    activeColor: '#667eea',
+                    borderColor: '#e5e7eb'
+                },
+                sessionCard: {
+                    backgroundColor: '#ffffff',
+                    borderRadius: '12px',
+                    shadowColor: 'rgba(0,0,0,0.08)',
+                    padding: '25px',
+                    titleColor: '#1f2937',
+                    textColor: '#4b5563',
+                    metaColor: '#6b7280',
+                    buttonColor: '#667eea',
+                    buttonTextColor: '#ffffff'
+                },
+                layout: {
+                    gridGap: '25px',
+                    gridColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+                    sectionSpacing: '50px'
+                },
+                speakerCard: {
+                    backgroundColor: '#ffffff',
+                    borderRadius: '12px',
+                    padding: '25px',
+                    avatarColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    nameColor: '#1f2937',
+                    titleColor: '#6b7280',
+                    shadowColor: 'rgba(0,0,0,0.08)'
+                },
+                colors: {
+                    primary: '#667eea',
+                    secondary: '#764ba2',
+                    success: '#10b981',
+                    warning: '#fbbf24',
+                    error: '#ef4444'
+                }
+            };
+            updateTabContent();
+            updatePreview();
+        }
+
+        function exportCSS() {
+            const css = generateCSS();
+            downloadFile('lobby-custom-styles.css', css, 'text/css');
+        }
+
+        function exportJSON() {
+            const json = JSON.stringify(config, null, 2);
+            downloadFile('lobby-customization.json', json, 'application/json');
+        }
+
+        function generateCSS() {
+            return `/* Custom Event Lobby Styles - Generated by Lobby Customizer */
+/* Copy and paste this CSS into your website */
+
+:root {
+  --primary-color: ${config.colors.primary};
+  --secondary-color: ${config.colors.secondary};
+  --success-color: ${config.colors.success};
+  --warning-color: ${config.colors.warning};
+  --error-color: ${config.colors.error};
+}
+
+/* Header Customization */
+.header {
+  background: ${config.header.backgroundColor} !important;
+  color: ${config.header.textColor} !important;
+}
+
+.logo {
+  color: ${config.header.logoColor} !important;
+}
+
+/* Masthead Customization */
+.masthead {
+  background: ${config.masthead.backgroundImage} !important;
+  color: ${config.masthead.textColor} !important;
+}
+
+.masthead h1 {
+  font-size: ${config.masthead.titleSize} !important;
+  color: ${config.masthead.textColor} !important;
+}
+
+.masthead p {
+  font-size: ${config.masthead.subtitleSize} !important;
+  color: ${config.masthead.textColor} !important;
+}
+
+/* Navigation Customization */
+.nav-tabs {
+  background: ${config.navigation.backgroundColor} !important;
+  border-bottom-color: ${config.navigation.borderColor} !important;
+}
+
+.nav-tab {
+  color: ${config.navigation.textColor} !important;
+}
+
+.nav-tab.active {
+  color: ${config.navigation.activeColor} !important;
+  border-bottom-color: ${config.navigation.activeColor} !important;
+}
+
+/* Session Card Customization */
+.session-card {
+  background: ${config.sessionCard.backgroundColor} !important;
+  border-radius: ${config.sessionCard.borderRadius} !important;
+  padding: ${config.sessionCard.padding} !important;
+  box-shadow: 0 4px 20px ${config.sessionCard.shadowColor} !important;
+}
+
+.session-title {
+  color: ${config.sessionCard.titleColor} !important;
+}
+
+.session-description {
+  color: ${config.sessionCard.textColor} !important;
+}
+
+.session-time, .session-speakers {
+  color: ${config.sessionCard.metaColor} !important;
+}
+
+.btn-primary {
+  background: ${config.sessionCard.buttonColor} !important;
+  color: ${config.sessionCard.buttonTextColor} !important;
+}
+
+/* Session Grid Customization */
+.sessions-grid {
+  grid-template-columns: ${config.layout.gridColumns} !important;
+  gap: ${config.layout.gridGap} !important;
+}
+
+.section {
+  margin-bottom: ${config.layout.sectionSpacing} !important;
+}
+
+/* Speaker Card Customization */
+.speaker-card {
+  background: ${config.speakerCard.backgroundColor} !important;
+  border-radius: ${config.speakerCard.borderRadius} !important;
+  padding: ${config.speakerCard.padding} !important;
+  box-shadow: 0 4px 20px ${config.speakerCard.shadowColor} !important;
+}
+
+.speaker-avatar {
+  background: ${config.speakerCard.avatarColor} !important;
+}
+
+.speaker-name {
+  color: ${config.speakerCard.nameColor} !important;
+}
+
+.speaker-title {
+  color: ${config.speakerCard.titleColor} !important;
+}`;
+        }
+
+        function downloadFile(filename, content, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function toggleFullPreview() {
+            isFullPreview = !isFullPreview;
+            const sidebar = document.getElementById('sidebar');
+            
+            if (isFullPreview) {
+                sidebar.classList.add('hidden');
+            } else {
+                sidebar.classList.remove('hidden');
+            }
+        }
+
+        // Initialize
+        updateTabContent();
+        updatePreview();
+    </script>
 </body>
 </html>
