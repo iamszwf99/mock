@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Lobby - Phase Display Rules</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header-nav-tab {
+            padding: 8px 0;
+            font-weight: 500;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .header-nav-tab.active {
+            color: white;
+            border-bottom-color: white;
+        }
+
+        .user-info {
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Phase Selector */
+        .phase-selector {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 2px solid #e5e7eb;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .phase-btn {
+            padding: 12px 24px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #6b7280;
+        }
+
+        .phase-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .phase-btn:hover {
+            border-color: #2563eb;
+        }
+
+        /* Content */
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .phase-indicator {
+            background: #2563eb;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: #2563eb;
+            color: white;
+        }
+
+        .section-badge.badge-live {
+            background: #ef4444;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .session-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .session-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-color: #e5e7eb;
+        }
+
+        .session-card.featured {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, #eff6ff 0%, #2563eb 1%, white 1%);
+        }
+
+        .session-card.live {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #ef4444 1%, white 1%);
+        }
+
+        .session-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .status-live {
+            background: #ef4444;
+            animation: pulse 2s infinite;
+        }
+
+        .status-soon {
+            background: #2563eb;
+        }
+
+        .status-recorded {
+            background: #6b7280;
+        }
+
+        .status-upcoming {
+            background: #2563eb;
+        }
+
+        .session-time {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .session-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #1f2937;
+            line-height: 1.4;
+        }
+
+        .session-speakers {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .session-description {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .session-meta {
+            font-size: 13px;
+            color: #2563eb;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .session-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-live {
+            background: #ef4444;
+            animation: pulse-button 2s infinite;
+        }
+
+        .btn-live:hover {
+            background: #dc2626;
+        }
+
+        .btn-calendar {
+            background: #2563eb;
+        }
+
+        .btn-watch {
+            background: #6b7280;
+        }
+
+        .btn-watch:hover {
+            background: #4b5563;
+        }
+
+        @keyframes pulse-button {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .countdown {
+            background: #6b7280;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Hidden sections */
+        .section.hidden {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .sessions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phase-selector {
+                flex-direction: column;
+                gap: 10px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">TechConnect 2024</div>
+            <div class="header-nav">
+                <div class="header-nav-tab active">Lobby</div>
+                <div class="header-nav-tab">My Agenda</div>
+                <div class="header-nav-tab">All Sessions</div>
+                <div class="header-nav-tab">Speakers</div>
+                <div class="header-nav-tab">Networking</div>
+            </div>
+        </div>
+        <div class="user-info">Welcome, Alex Chen</div>
+    </div>
+
+    <!-- Phase Selector (For Demo) -->
+    <div class="phase-selector">
+        <button class="phase-btn active" onclick="switchPhase('pre')">PRE-EVENT</button>
+        <button class="phase-btn" onclick="switchPhase('during')">DURING EVENT</button>
+        <button class="phase-btn" onclick="switchPhase('post')">POST-EVENT</button>
+    </div>
+
+    <div class="content">
+        <!-- Phase Indicator -->
+        <div class="phase-indicator" id="phaseIndicator">
+            PRE-EVENT PHASE: Building anticipation, highlighting key sessions
+        </div>
+
+        <!-- Pre-Event Sections -->
+        <div class="section" id="keynotes-pre">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Keynote & Headliner Sessions
+                        <span class="section-badge">Priority</span>
+                    </h2>
+                    <p class="section-subtitle">Industry leaders and major announcements you can't miss</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="keynotes-pre-grid">
+                <!-- Pre-event keynotes -->
+            </div>
+        </div>
+
+        <div class="section" id="featured-pre">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Featured Sessions
+                        <span class="section-badge">Recommended</span>
+                    </h2>
+                    <p class="section-subtitle">Highlighted sessions based on popularity and impact</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="featured-pre-grid">
+                <!-- Pre-event featured sessions -->
+            </div>
+        </div>
+
+        <div class="section" id="more-sessions-pre">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">More Sessions</h2>
+                    <p class="section-subtitle">Additional sessions you might find interesting</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="more-sessions-pre-grid">
+                <!-- More sessions -->
+            </div>
+        </div>
+
+        <!-- During Event Sections -->
+        <div class="section hidden" id="live-during">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Live Now
+                        <span class="section-badge badge-live">Live</span>
+                    </h2>
+                    <p class="section-subtitle">Join these sessions happening right now</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="live-during-grid">
+                <!-- Live sessions -->
+            </div>
+        </div>
+
+        <div class="section hidden" id="starting-soon">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Starting Soon
+                        <span class="section-badge">Next 60 min</span>
+                    </h2>
+                    <p class="section-subtitle">Sessions starting in the next hour</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="starting-soon-grid">
+                <!-- Starting soon sessions -->
+            </div>
+        </div>
+
+        <div class="section hidden" id="popular-during">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Popular Right Now
+                        <span class="section-badge">Trending</span>
+                    </h2>
+                    <p class="section-subtitle">Sessions with highest live attendance</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="popular-during-grid">
+                <!-- Popular sessions -->
+            </div>
+        </div>
+
+        <div class="section hidden" id="more-sessions-during">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">More Sessions</h2>
+                    <p class="section-subtitle">Additional sessions available today</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="more-sessions-during-grid">
+                <!-- More sessions during event -->
+            </div>
+        </div>
+
+        <!-- Post Event Sections -->
+        <div class="section hidden" id="most-watched">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Most Watched Sessions
+                        <span class="section-badge">Top Rated</span>
+                    </h2>
+                    <p class="section-subtitle">Watch what 1,200+ others enjoyed most</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="most-watched-grid">
+                <!-- Most watched sessions -->
+            </div>
+        </div>
+
+        <div class="section hidden" id="missed-keynotes">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Missed the Keynotes?
+                        <span class="section-badge">Catch Up</span>
+                    </h2>
+                    <p class="section-subtitle">Major announcements and breakthrough moments</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="missed-keynotes-grid">
+                <!-- Missed keynotes -->
+            </div>
+        </div>
+
+        <div class="section hidden" id="recommended">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        Recommended for You
+                        <span class="section-badge">Personalized</span>
+                    </h2>
+                    <p class="section-subtitle">Based on your interests and registered sessions</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="recommended-grid">
+                <!-- Recommended sessions -->
+            </div>
+        </div>
+
+        <div class="section hidden" id="more-sessions-post">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">More Sessions</h2>
+                    <p class="section-subtitle">Additional recordings you might have missed</p>
+                </div>
+            </div>
+            <div class="sessions-grid" id="more-sessions-post-grid">
+                <!-- More post-event sessions -->
+            </div>
+        </div>
+
+        <!-- Common section - shown in all phases -->
+        <div class="section" id="speakers-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title" id="speakers-title">Featured Speakers</h2>
+                    <p class="section-subtitle" id="speakers-subtitle">Meet our amazing lineup of industry experts</p>
+                </div>
+            </div>
+            <div class="sessions-grid">
+                <div class="session-card">
+                    <div class="session-title">Dr. Sarah Chen</div>
+                    <div class="session-speakers">AI Research Director, MIT</div>
+                    <div class="session-description">Leading researcher in neural networks and autonomous systems.</div>
+                    <div class="session-actions">
+                        <button class="btn-primary" id="speaker-cta">View Profile</button>
+                    </div>
+                </div>
+                <div class="session-card">
+                    <div class="session-title">Prof. Michael Zhang</div>
+                    <div class="session-speakers">Quantum Computing Lead, IBM</div>
+                    <div class="session-description">Pioneer in quantum cryptography and optimization algorithms.</div>
+                    <div class="session-actions">
+                        <button class="btn-primary">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhase = 'pre';
+
+        const sessionData = {
+            pre: {
+                keynotes: [
+                    {
+                        title: "Opening Keynote: The Next Decade of Tech",
+                        time: "March 15, 9:00 AM - 10:00 AM",
+                        speakers: "Satya Nadella, Microsoft CEO",
+                        description: "Vision for the future of technology and its impact on society.",
+                        meta: "1,200+ attendees confirmed",
+                        cta: "Add to Calendar",
+                        ctaClass: "btn-primary",
+                        featured: true
+                    },
+                    {
+                        title: "Closing Keynote: What's Next?",
+                        time: "March 16, 5:00 PM - 6:00 PM",
+                        speakers: "Elon Musk, Tesla & SpaceX",
+                        description: "Major announcements about the future of transportation and space.",
+                        meta: "Limited virtual seats available",
+                        cta: "Set Reminder",
+                        ctaClass: "btn-primary"
+                    }
+                ],
+                featured: [
+                    {
+                        title: "The Future of AI in Healthcare",
+                        time: "March 15, 2:00 PM - 3:00 PM",
+                        speakers: "Dr. Sarah Chen, MIT AI Lab",
+                        description: "Revolutionary AI applications transforming patient care and medical diagnosis.",
+                        meta: "650+ attendees confirmed",
+                        cta: "Add to Calendar",
+                        ctaClass: "btn-primary"
+                    },
+                    {
+                        title: "Quantum Computing Breakthroughs",
+                        time: "March 15, 3:30 PM - 4:30 PM",
+                        speakers: "Prof. Michael Zhang, IBM Quantum",
+                        description: "Latest quantum computing applications in cryptography and optimization.",
+                        meta: "420+ attendees confirmed",
+                        cta: "Set Reminder",
+                        ctaClass: "btn-primary"
+                    }
+                ],
+                more: [
+                    {
+                        title: "Introduction to Cloud Architecture",
+                        time: "March 15, 11:00 AM - 12:00 PM",
+                        speakers: "Lisa Park, Google Cloud",
+                        description: "Basic principles of designing scalable cloud systems.",
+                        meta: "Beginner-friendly session",
+                        cta: "Add to Calendar",
+                        ctaClass: "btn-primary"
+                    },
+                    {
+                        title: "API Design Best Practices",
+                        time: "March 16, 10:30 AM - 11:30 AM",
+                        speakers: "Marcus Brown, Stripe",
+                        description: "Creating maintainable and scalable API architectures.",
+                        meta: "Intermediate level",
+                        cta: "Set Reminder",
+                        ctaClass: "btn-primary"
+                    }
+                ]
+            },
+            during: {
+                live: [
+                    {
+                        title: "Neural Networks & Deep Learning",
+                        time: "LIVE NOW",
+                        speakers: "Dr. Sarah Chen, MIT AI Lab",
+                        description: "Exploring cutting-edge neural architecture applications.",
+                        meta: "142 watching live",
+                        cta: "Join Live",
+                        ctaClass: "btn-live",
+                        status: "live"
+                    },
+                    {
+                        title: "Blockchain Infrastructure Deep Dive",
+                        time: "LIVE NOW",
+                        speakers: "Elena Rodriguez, Ethereum",
+                        description: "Advanced blockchain architecture for enterprise applications.",
+                        meta: "89 watching live",
+                        cta: "Join Live",
+                        ctaClass: "btn-live",
+                        status: "live"
+                    }
+                ],
+                soon: [
+                    {
+                        title: "Cybersecurity in AI Systems",
+                        time: "Starting in 23 minutes",
+                        speakers: "James Wilson, Microsoft Security",
+                        description: "Protecting AI models from adversarial attacks.",
+                        meta: "Pre-show starting soon",
+                        cta: "Join Waiting Room",
+                        ctaClass: "btn-primary",
+                        status: "soon"
+                    }
+                ],
+                popular: [
+                    {
+                        title: "The Future of Autonomous Vehicles",
+                        time: "2:00 PM - 3:00 PM",
+                        speakers: "David Chen, Tesla Autopilot",
+                        description: "Next-generation self-driving technology.",
+                        meta: "Most attended today (340+ joined)",
+                        cta: "Join at 2:00 PM",
+                        ctaClass: "btn-primary"
+                    }
+                ],
+                more: [
+                    {
+                        title: "Introduction to DevOps",
+                        time: "4:00 PM - 5:00 PM",
+                        speakers: "Tom Anderson, Docker",
+                        description: "Getting started with modern deployment practices.",
+                        meta: "Beginner session",
+                        cta: "Join at 4:00 PM",
+                        ctaClass: "btn-primary"
+                    },
+                    {
+                        title: "Database Optimization Techniques",
+                        time: "1:30 PM - 2:30 PM",
+                        speakers: "Amy Zhou, Snowflake",
+                        description: "Performance tuning for large-scale applications.",
+                        meta: "Technical deep-dive",
+                        cta: "Join at 1:30 PM",
+                        ctaClass: "btn-primary"
+                    }
+                ]
+            },
+            post: {
+                watched: [
+                    {
+                        title: "Opening Keynote: The Next Decade",
+                        time: "Available Now",
+                        speakers: "Satya Nadella, Microsoft CEO",
+                        description: "Vision for the future of technology and society.",
+                        meta: "1,450 watched • 4.9/5 rating",
+                        cta: "Watch Recording",
+                        ctaClass: "btn-watch",
+                        status: "recorded"
+                    },
+                    {
+                        title: "Neural Networks & Deep Learning",
+                        time: "Available Now",
+                        speakers: "Dr. Sarah Chen, MIT AI Lab",
+                        description: "Cutting-edge neural architecture applications.",
+                        meta: "890 watched • Most shared",
+                        cta: "Watch Recording",
+                        ctaClass: "btn-watch",
+                        status: "recorded"
+                    }
+                ],
+                keynotes: [
+                    {
+                        title: "Closing Keynote: What's Next?",
+                        time: "Just Added",
+                        speakers: "Elon Musk, Tesla & SpaceX",
+                        description: "Major announcements about the future of transportation and space.",
+                        meta: "New recording • 2,100+ waiting",
+                        cta: "Watch Now",
+                        ctaClass: "btn-primary",
+                        status: "recorded"
+                    }
+                ],
+                recommended: [
+                    {
+                        title: "Quantum Computing Breakthroughs",
+                        time: "Available Now",
+                        speakers: "Prof. Michael Zhang, IBM",
+                        description: "Based on your interest in AI sessions.",
+                        meta: "Recommended for you",
+                        cta: "Watch Recording",
+                        ctaClass: "btn-watch"
+                    }
+                ],
+                more: [
+                    {
+                        title: "Introduction to Cloud Architecture",
+                        time: "Available Now",
+                        speakers: "Lisa Park, Google Cloud",
+                        description: "Basic principles of designing scalable cloud systems.",
+                        meta: "245 watched",
+                        cta: "Watch Recording",
+                        ctaClass: "btn-watch"
+                    },
+                    {
+                        title: "API Design Best Practices",
+                        time: "Available Now",
+                        speakers: "Marcus Brown, Stripe",
+                        description: "Creating maintainable and scalable API architectures.",
+                        meta: "189 watched",
+                        cta: "Watch Recording",
+                        ctaClass: "btn-watch"
+                    }
+                ]
+            }
+        };
+
+        function switchPhase(phase) {
+            currentPhase = phase;
+            
+            // Update phase buttons
+            document.querySelectorAll('.phase-btn').forEach(btn => {
+                btn.classList.remove('active');
+                // Check if this button corresponds to the current phase
+                if ((phase === 'pre' && btn.textContent.includes('PRE-EVENT')) ||
+                    (phase === 'during' && btn.textContent.includes('DURING EVENT')) ||
+                    (phase === 'post' && btn.textContent.includes('POST-EVENT'))) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Update phase indicator
+            const indicator = document.getElementById('phaseIndicator');
+            const indicators = {
+                pre: "PRE-EVENT PHASE: Building anticipation, highlighting key sessions",
+                during: "DURING EVENT PHASE: Maximizing live attendance, creating engagement",
+                post: "POST-EVENT PHASE: Driving recording views, maintaining engagement"
+            };
+            indicator.textContent = indicators[phase];
+            
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show relevant sections and populate content
+            if (phase === 'pre') {
+                showSection('keynotes-pre');
+                showSection('featured-pre');
+                showSection('more-sessions-pre');
+                populateGrid('keynotes-pre-grid', sessionData.pre.keynotes);
+                populateGrid('featured-pre-grid', sessionData.pre.featured);
+                populateGrid('more-sessions-pre-grid', sessionData.pre.more);
+                
+                document.getElementById('speakers-title').textContent = 'Featured Speakers';
+                document.getElementById('speakers-subtitle').textContent = 'Meet our amazing lineup - connect before the event';
+                
+            } else if (phase === 'during') {
+                showSection('live-during');
+                showSection('starting-soon');
+                showSection('popular-during');
+                showSection('more-sessions-during');
+                populateGrid('live-during-grid', sessionData.during.live);
+                populateGrid('starting-soon-grid', sessionData.during.soon);
+                populateGrid('popular-during-grid', sessionData.during.popular);
+                populateGrid('more-sessions-during-grid', sessionData.during.more);
+                
+                document.getElementById('speakers-title').textContent = 'Speaking Today';
+                document.getElementById('speakers-subtitle').textContent = 'Connect with today\'s speakers';
+                
+            } else if (phase === 'post') {
+                showSection('most-watched');
+                showSection('missed-keynotes');
+                showSection('recommended');
+                showSection('more-sessions-post');
+                populateGrid('most-watched-grid', sessionData.post.watched);
+                populateGrid('missed-keynotes-grid', sessionData.post.keynotes);
+                populateGrid('recommended-grid', sessionData.post.recommended);
+                populateGrid('more-sessions-post-grid', sessionData.post.more);
+                
+                document.getElementById('speakers-title').textContent = 'Connect with Speakers';
+                document.getElementById('speakers-subtitle').textContent = 'Continue the conversation with our speakers';
+            }
+            
+            // Always show speakers section
+            showSection('speakers-section');
+        }
+
+        function showSection(sectionId) {
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function populateGrid(gridId, sessions) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = sessions.map(session => `
+                <div class="session-card ${session.featured ? 'featured' : ''} ${session.status === 'live' ? 'live' : ''}">
+                    ${session.status ? `<div class="session-status status-${session.status}">${session.status.toUpperCase()}</div>` : ''}
+                    <div class="session-time">${session.time}</div>
+                    <h3 class="session-title">${session.title}</h3>
+                    <div class="session-speakers">${session.speakers}</div>
+                    <div class="session-description">${session.description}</div>
+                    <div class="session-meta">${session.meta}</div>
+                    <div class="session-actions">
+                        <button class="btn-primary ${session.ctaClass || ''}">${session.cta}</button>
+                        ${session.status === 'soon' ? '<div class="countdown">23:45</div>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize with pre-event phase
+        switchPhase('pre');
+    </script>
+</body>
+</html>
