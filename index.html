@@ -219,45 +219,151 @@
             padding: 40px;
         }
 
-        /* Quick Actions Bar */
-        .quick-actions {
+        /* Track Tabs */
+        .track-tabs {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .track-tabs-container {
+            display: flex;
+            gap: 0;
+            min-width: max-content;
+            padding: 0 40px;
+        }
+
+        .track-tab {
+            padding: 16px 24px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        .track-tab.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+
+        .track-tab:hover {
+            color: #2563eb;
+        }
+
+        /* Enhanced Search and Filters */
+        .search-filters {
             background: white;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .search-row {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             align-items: center;
             flex-wrap: wrap;
         }
 
-        .filter-btn, .action-btn {
-            padding: 10px 20px;
+        .enhanced-search {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .enhanced-search input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+        }
+
+        .enhanced-search input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: white;
+        }
+
+        .enhanced-search .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .filter-dropdown {
+            position: relative;
+            min-width: 120px;
+        }
+
+        .filter-dropdown select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            color: #374151;
+        }
+
+        .filter-dropdown select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .quick-filter-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
             border: 2px solid #e5e7eb;
             background: white;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s ease;
             font-size: 14px;
         }
 
-        .filter-btn.active {
-            background: #667eea;
+        .filter-chip.active {
+            background: #2563eb;
             color: white;
-            border-color: #667eea;
+            border-color: #2563eb;
+        }
+
+        .filter-chip:hover {
+            border-color: #2563eb;
         }
 
         .action-btn {
+            padding: 12px 20px;
             background: #f3f4f6;
-            border-color: #d1d5db;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            color: #374151;
         }
 
         .action-btn:hover {
-            background: #667eea;
+            background: #2563eb;
             color: white;
-            border-color: #667eea;
+            border-color: #2563eb;
         }
 
         /* Section Headers */
@@ -322,10 +428,6 @@
 
         .session-card.featured {
             background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 1%, white 1%);
-        }
-
-        .session-card.bookmarked {
-            /* border-color: #ef4444; - removed red border */
         }
 
         .session-status {
@@ -447,7 +549,7 @@
         }
 
         .bookmark-btn.bookmarked {
-            color: #ef4444;
+            color: #2563eb;
         }
 
         /* Speakers Grid */
@@ -541,36 +643,6 @@
             font-size: 11px;
             font-weight: bold;
             text-transform: uppercase;
-        }
-
-        /* Search Bar */
-        .search-container {
-            position: relative;
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 20px 12px 45px;
-            border: 2px solid #e5e7eb;
-            border-radius: 25px;
-            font-size: 14px;
-            background: #f9fafb;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
         }
 
         /* Empty State */
@@ -718,9 +790,29 @@
                 grid-template-columns: 1fr;
             }
 
-            .quick-actions {
+            .search-filters {
+                padding: 16px;
+            }
+
+            .search-row {
                 flex-direction: column;
                 align-items: stretch;
+            }
+
+            .enhanced-search {
+                min-width: auto;
+            }
+
+            .filter-dropdown {
+                min-width: auto;
+            }
+
+            .quick-filter-chips {
+                justify-content: center;
+            }
+
+            .track-tabs-container {
+                padding: 0 20px;
             }
 
             .masthead {
@@ -795,22 +887,72 @@
     </div>
 
     <div class="content">
+        <!-- Track Tabs -->
+        <div class="track-tabs">
+            <div class="track-tabs-container">
+                <div class="track-tab active">All tracks</div>
+                <div class="track-tab">The Critical few</div>
+                <div class="track-tab">The SMB Stack</div>
+                <div class="track-tab">Verticals in Focus</div>
+                <div class="track-tab">Ecosystem in Action</div>
+                <div class="track-tab">YOUtopia</div>
+                <div class="track-tab">Industry Innovation Exchange</div>
+            </div>
+        </div>
+
         <!-- Day Toggle -->
         <div class="day-toggle">
             <button class="day-btn active" onclick="switchDay(1)">Day 1 - March 15</button>
             <button class="day-btn" onclick="switchDay(2)">Day 2 - March 16</button>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <div class="search-container">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search sessions, speakers, topics...">
-                <span class="search-icon">🔍</span>
+        <!-- Enhanced Search and Filters -->
+        <div class="search-filters">
+            <div class="search-row">
+                <div class="enhanced-search">
+                    <input type="text" id="searchInput" placeholder="Search Sessions">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="filter-dropdown">
+                    <select id="dayFilter">
+                        <option value="">Day</option>
+                        <option value="day1">Day 1</option>
+                        <option value="day2">Day 2</option>
+                    </select>
+                </div>
+                <div class="filter-dropdown">
+                    <select id="productFilter">
+                        <option value="">Products</option>
+                        <option value="ai">AI & ML</option>
+                        <option value="cloud">Cloud</option>
+                        <option value="security">Security</option>
+                    </select>
+                </div>
+                <div class="filter-dropdown">
+                    <select id="levelFilter">
+                        <option value="">Levels</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="filter-dropdown">
+                    <select id="categoryFilter">
+                        <option value="">Categories</option>
+                        <option value="keynote">Keynote</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="panel">Panel</option>
+                    </select>
+                </div>
+                <button class="action-btn">📅 Download Schedule</button>
             </div>
-            <button class="filter-btn active" onclick="filterSessions('all')">All Sessions</button>
-            <button class="filter-btn" id="liveFilterBtn" onclick="filterSessions('live')">Live Now</button>
-            <button class="filter-btn" onclick="filterSessions('future')">Upcoming</button>
-            <button class="action-btn">📅 Download Schedule</button>
+            <div class="quick-filter-chips">
+                <div class="filter-chip active" onclick="filterSessions('all')">All Sessions</div>
+                <div class="filter-chip" id="liveFilterChip" onclick="filterSessions('live')">Live Now</div>
+                <div class="filter-chip" onclick="filterSessions('future')">Upcoming</div>
+                <div class="filter-chip" onclick="filterSessions('featured')">Featured</div>
+                <div class="filter-chip" onclick="filterSessions('bookmarked')">My Bookmarks</div>
+            </div>
         </div>
 
         <!-- Live Sessions (Priority Section) -->
@@ -962,7 +1104,7 @@
                     <div class="modal-session-speaker">👤 Prof. Michael Zhang, IBM Research</div>
                     <div class="modal-session-actions">
                         <button class="btn-primary live">Join</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -974,7 +1116,7 @@
                     <div class="modal-session-speaker">👤 James Wilson, Microsoft Security</div>
                     <div class="modal-session-actions">
                         <button class="btn-secondary">Start in 1 hour</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -985,8 +1127,8 @@
                     <div class="modal-session-title">The Future of Autonomous Vehicles</div>
                     <div class="modal-session-speaker">👤 David Chen, Tesla Autopilot</div>
                     <div class="modal-session-actions">
-                        <button class="btn-secondary">Start in 2 hour2</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="btn-secondary">Start in 1 hour</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -997,8 +1139,8 @@
                     <div class="modal-session-title">Web3 & Decentralized Applications</div>
                     <div class="modal-session-speaker">👤 Alex Kumar, Coinbase</div>
                     <div class="modal-session-actions">
-                        <button class="btn-secondary">Start in 3 hour3</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="btn-secondary">Start in 1 hour</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -1010,7 +1152,7 @@
                     <div class="modal-session-speaker">👤 Tom Anderson, Docker</div>
                     <div class="modal-session-actions">
                         <button class="btn-secondary">Watch Recording</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <!-- Day 2 bookmarks -->
@@ -1024,7 +1166,7 @@
                     <div class="modal-session-speaker">👤 Dr. Amanda White, Netflix</div>
                     <div class="modal-session-actions">
                         <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -1036,7 +1178,7 @@
                     <div class="modal-session-speaker">👤 Dr. Kevin Park, Apple</div>
                     <div class="modal-session-actions">
                         <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -1048,7 +1190,7 @@
                     <div class="modal-session-speaker">👤 Sarah Johnson, Google Kubernetes</div>
                     <div class="modal-session-actions">
                         <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -1060,7 +1202,7 @@
                     <div class="modal-session-speaker">👤 Michael Zhang, Uber Engineering</div>
                     <div class="modal-session-actions">
                         <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">❤️</button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
             </div>
@@ -1350,8 +1492,8 @@
             
             // Reset filter to "all" when switching days
             currentFilter = 'all';
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.filter-btn').classList.add('active');
+            document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+            document.querySelector('.filter-chip').classList.add('active');
             
             updateDayContent();
         }
@@ -1406,15 +1548,15 @@
 
         function updateQuickActions() {
             const searchInput = document.getElementById('searchInput');
-            const liveFilterBtn = document.getElementById('liveFilterBtn');
+            const liveFilterChip = document.getElementById('liveFilterChip');
             
             if (currentDay === 1) {
-                searchInput.placeholder = 'Search sessions, speakers, topics...';
-                liveFilterBtn.style.display = 'block';
-                liveFilterBtn.textContent = 'Live Now';
+                searchInput.placeholder = 'Search Sessions';
+                liveFilterChip.style.display = 'block';
+                liveFilterChip.textContent = 'Live Now';
             } else {
-                searchInput.placeholder = 'Search Day 2 sessions, speakers, topics...';
-                liveFilterBtn.style.display = 'none';
+                searchInput.placeholder = 'Search Day 2 Sessions';
+                liveFilterChip.style.display = 'none';
             }
         }
 
@@ -1505,7 +1647,7 @@
                         <button class="bookmark-btn ${session.bookmarked ? 'bookmarked' : ''}" 
                                 onclick="toggleBookmark(${session.id})" 
                                 title="${session.bookmarked ? 'Remove bookmark' : 'Add bookmark'}">
-                            ${session.bookmarked ? '❤️' : '🤍'}
+                            ${session.bookmarked ? '🔖' : '📑'}
                         </button>
                     </div>
                 </div>
@@ -1529,9 +1671,9 @@
         function filterSessions(filter) {
             currentFilter = filter;
             
-            // Update filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
+            // Update filter chips
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
             });
             event.target.classList.add('active');
             
