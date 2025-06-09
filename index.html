@@ -124,6 +124,13 @@
             border-bottom: 1px solid #e5e7eb;
             padding: 0 40px;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-tabs-left {
+            display: flex;
             gap: 40px;
         }
 
@@ -143,6 +150,170 @@
 
         .nav-tab:hover {
             color: #667eea;
+        }
+
+        /* Compact Search Filter in Nav */
+        .nav-search-filter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .nav-search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .nav-search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+            transition: all 0.3s ease;
+        }
+
+        .nav-search-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: white;
+        }
+
+        .nav-search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 16px;
+        }
+
+        .nav-expand-btn {
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .nav-expand-btn:hover {
+            background: #e5e7eb;
+            border-color: #2563eb;
+        }
+
+        .nav-expand-btn.expanded {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* Dropdown Filter Panel */
+        .filter-dropdown-panel {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            padding: 20px;
+            width: 600px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .filter-dropdown-panel.expanded {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .filter-panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-dropdown-compact {
+            min-width: 120px;
+        }
+
+        .filter-dropdown-compact select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+            color: #374151;
+        }
+
+        .filter-dropdown-compact select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .filter-chips-compact {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip-compact {
+            padding: 6px 12px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .filter-chip-compact.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .filter-chip-compact:hover {
+            border-color: #2563eb;
+        }
+
+        .action-btn-compact {
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .action-btn-compact:hover {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
         }
 
         /* Masthead */
@@ -818,41 +989,54 @@
                 gap: 15px;
             }
 
+            .nav-tabs {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .nav-tabs-left {
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .nav-search-filter {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-search-container {
+                width: 250px;
+            }
+
+            .filter-dropdown-panel {
+                width: 90vw;
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            .filter-dropdown-panel.expanded {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .filter-dropdown-compact {
+                min-width: auto;
+            }
+
             .content {
                 padding: 20px;
             }
 
             .sessions-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .search-filters {
-                padding: 16px;
-            }
-
-            .search-filter-content.expanded {
-                max-height: 600px;
-            }
-
-            .search-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .enhanced-search {
-                min-width: auto;
-            }
-
-            .filter-dropdown {
-                min-width: auto;
-            }
-
-            .quick-filter-chips {
-                justify-content: center;
-            }
-
-            .track-tabs-container {
-                padding: 0 16px;
             }
 
             .masthead {
@@ -893,11 +1077,68 @@
 
     <!-- Navigation Tabs -->
     <div class="nav-tabs">
-        <div class="nav-tab active">Lobby</div>
-        <div class="nav-tab">My Agenda</div>
-        <div class="nav-tab">All Sessions</div>
-        <div class="nav-tab">Speakers</div>
-        <div class="nav-tab">Networking</div>
+        <div class="nav-tabs-left">
+            <div class="nav-tab active">Lobby</div>
+            <div class="nav-tab">My Agenda</div>
+            <div class="nav-tab">All Sessions</div>
+            <div class="nav-tab">Speakers</div>
+            <div class="nav-tab">Networking</div>
+        </div>
+        
+        <!-- Compact Search and Filter -->
+        <div class="nav-search-filter">
+            <div class="nav-search-container">
+                <input type="text" class="nav-search-input" id="searchInput" placeholder="Search Sessions">
+                <span class="nav-search-icon">🔍</span>
+            </div>
+            <button class="nav-expand-btn" id="navExpandBtn" onclick="toggleNavFilter()">⚙️</button>
+            
+            <!-- Filter Dropdown Panel -->
+            <div class="filter-dropdown-panel" id="filterDropdownPanel">
+                <div class="filter-panel-title">Filter Options</div>
+                <div class="filter-row">
+                    <div class="filter-dropdown-compact">
+                        <select id="dayFilter">
+                            <option value="">Day</option>
+                            <option value="day1">Day 1</option>
+                            <option value="day2">Day 2</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown-compact">
+                        <select id="productFilter">
+                            <option value="">Products</option>
+                            <option value="ai">AI & ML</option>
+                            <option value="cloud">Cloud</option>
+                            <option value="security">Security</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown-compact">
+                        <select id="levelFilter">
+                            <option value="">Levels</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown-compact">
+                        <select id="categoryFilter">
+                            <option value="">Categories</option>
+                            <option value="keynote">Keynote</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="panel">Panel</option>
+                        </select>
+                    </div>
+                    <button class="action-btn-compact">📅 Download</button>
+                </div>
+                <div class="filter-chips-compact">
+                    <div class="filter-chip-compact active" onclick="filterSessions('all')">All Sessions</div>
+                    <div class="filter-chip-compact" id="liveFilterChip" onclick="filterSessions('live')">Live Now</div>
+                    <div class="filter-chip-compact" onclick="filterSessions('future')">Upcoming</div>
+                    <div class="filter-chip-compact" onclick="filterSessions('featured')">Featured</div>
+                    <div class="filter-chip-compact" onclick="filterSessions('bookmarked')">My Bookmarks</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Masthead -->
@@ -931,77 +1172,6 @@
         <div class="day-toggle">
             <button class="day-btn active" onclick="switchDay(1)">Day 1 - March 15</button>
             <button class="day-btn" onclick="switchDay(2)">Day 2 - March 16</button>
-        </div>
-
-        <!-- Combined Search and Filter Component -->
-        <div class="search-filter-container">
-            <div class="search-filter-header" onclick="toggleSearchFilter()">
-                <div class="search-filter-title">Search & Filter Sessions</div>
-                <div class="expand-icon" id="expandIcon">▼</div>
-            </div>
-            <div class="search-filter-content" id="searchFilterContent">
-                <!-- Track Tabs -->
-                <div class="track-tabs">
-                    <div class="track-tabs-container">
-                        <div class="track-tab active">All tracks</div>
-                        <div class="track-tab">The Critical few</div>
-                        <div class="track-tab">The SMB Stack</div>
-                        <div class="track-tab">Verticals in Focus</div>
-                        <div class="track-tab">Ecosystem in Action</div>
-                        <div class="track-tab">YOUtopia</div>
-                        <div class="track-tab">Industry Innovation Exchange</div>
-                    </div>
-                </div>
-
-                <!-- Enhanced Search and Filters -->
-                <div class="search-filters">
-                    <div class="search-row">
-                        <div class="enhanced-search">
-                            <input type="text" id="searchInput" placeholder="Search Sessions">
-                            <span class="search-icon">🔍</span>
-                        </div>
-                        <div class="filter-dropdown">
-                            <select id="dayFilter">
-                                <option value="">Day</option>
-                                <option value="day1">Day 1</option>
-                                <option value="day2">Day 2</option>
-                            </select>
-                        </div>
-                        <div class="filter-dropdown">
-                            <select id="productFilter">
-                                <option value="">Products</option>
-                                <option value="ai">AI & ML</option>
-                                <option value="cloud">Cloud</option>
-                                <option value="security">Security</option>
-                            </select>
-                        </div>
-                        <div class="filter-dropdown">
-                            <select id="levelFilter">
-                                <option value="">Levels</option>
-                                <option value="beginner">Beginner</option>
-                                <option value="intermediate">Intermediate</option>
-                                <option value="advanced">Advanced</option>
-                            </select>
-                        </div>
-                        <div class="filter-dropdown">
-                            <select id="categoryFilter">
-                                <option value="">Categories</option>
-                                <option value="keynote">Keynote</option>
-                                <option value="workshop">Workshop</option>
-                                <option value="panel">Panel</option>
-                            </select>
-                        </div>
-                        <button class="action-btn">📅 Download Schedule</button>
-                    </div>
-                    <div class="quick-filter-chips">
-                        <div class="filter-chip active" onclick="filterSessions('all')">All Sessions</div>
-                        <div class="filter-chip" id="liveFilterChip" onclick="filterSessions('live')">Live Now</div>
-                        <div class="filter-chip" onclick="filterSessions('future')">Upcoming</div>
-                        <div class="filter-chip" onclick="filterSessions('featured')">Featured</div>
-                        <div class="filter-chip" onclick="filterSessions('bookmarked')">My Bookmarks</div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Live Sessions (Priority Section) -->
@@ -1383,6 +1553,17 @@
             icon.classList.toggle('expanded');
         }
 
+        // Global function to toggle navigation filter
+        window.toggleNavFilter = function() {
+            const panel = document.getElementById('filterDropdownPanel');
+            const btn = document.getElementById('navExpandBtn');
+            
+            if (panel && btn) {
+                panel.classList.toggle('expanded');
+                btn.classList.toggle('expanded');
+            }
+        }
+
         function switchDay(day) {
             currentDay = day;
             
@@ -1393,8 +1574,8 @@
             
             // Reset filter to "all" when switching days
             currentFilter = 'all';
-            document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
-            document.querySelector('.filter-chip').classList.add('active');
+            document.querySelectorAll('.filter-chip-compact').forEach(chip => chip.classList.remove('active'));
+            document.querySelector('.filter-chip-compact').classList.add('active');
             
             updateDayContent();
         }
@@ -1452,12 +1633,14 @@
             const liveFilterChip = document.getElementById('liveFilterChip');
             
             if (currentDay === 1) {
-                searchInput.placeholder = 'Search Sessions';
-                liveFilterChip.style.display = 'block';
-                liveFilterChip.textContent = 'Live Now';
+                if (searchInput) searchInput.placeholder = 'Search Sessions';
+                if (liveFilterChip) {
+                    liveFilterChip.style.display = 'block';
+                    liveFilterChip.textContent = 'Live Now';
+                }
             } else {
-                searchInput.placeholder = 'Search Day 2 Sessions';
-                liveFilterChip.style.display = 'none';
+                if (searchInput) searchInput.placeholder = 'Search Day 2 Sessions';
+                if (liveFilterChip) liveFilterChip.style.display = 'none';
             }
         }
 
@@ -1572,7 +1755,7 @@
             currentFilter = filter;
             
             // Update filter chips
-            document.querySelectorAll('.filter-chip').forEach(chip => {
+            document.querySelectorAll('.filter-chip-compact').forEach(chip => {
                 chip.classList.remove('active');
             });
             event.target.classList.add('active');
@@ -1652,6 +1835,16 @@
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal-overlay')) {
                 e.target.style.display = 'none';
+            }
+            
+            // Close filter dropdown when clicking outside
+            const filterPanel = document.getElementById('filterDropdownPanel');
+            const expandBtn = document.getElementById('navExpandBtn');
+            const searchFilter = document.querySelector('.nav-search-filter');
+            
+            if (!searchFilter.contains(e.target) && filterPanel.classList.contains('expanded')) {
+                filterPanel.classList.remove('expanded');
+                expandBtn.classList.remove('expanded');
             }
         });
 
