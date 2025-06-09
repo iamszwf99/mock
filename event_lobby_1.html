@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechConnect 2024 - Event Lobby</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            color: white;
+        }
+
+        .event-day-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .event-day-indicator:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .day-dot {
+            width: 8px;
+            height: 8px;
+            background: #fbbf24;
+            border-radius: 50%;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .countdown-timer {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            margin: 30px auto 0;
+            max-width: 400px;
+            display: none;
+        }
+
+        .countdown-timer.show {
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .countdown-time {
+            font-size: 32px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bookmark-count {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bookmark-count:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 40px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-tab {
+            padding: 15px 0;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .nav-tab:hover {
+            color: #667eea;
+        }
+
+        /* Masthead */
+        .masthead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .masthead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M0,300 Q500,100 1000,300 L1000,1000 L0,1000 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .masthead-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .masthead h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .masthead p {
+            font-size: 20px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .event-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Content Container */
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* Quick Actions Bar */
+        .quick-actions {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn, .action-btn {
+            padding: 10px 20px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .action-btn {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .view-all {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .view-all:hover {
+            background: #f3f4f6;
+        }
+
+        /* Session Cards */
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .session-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .session-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .session-card.featured {
+            background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 1%, white 1%);
+        }
+
+        .session-card.bookmarked {
+            /* border-color: #ef4444; - removed red border */
+        }
+
+        .session-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-live {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-finished {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .status-future {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .session-time {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .session-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #1f2937;
+            line-height: 1.4;
+        }
+
+        .session-speakers {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .session-description {
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .session-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #5b6fd8;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary.live {
+            background: #667eea;
+            animation: pulse-button 2s infinite;
+        }
+
+        @keyframes pulse-button {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .bookmark-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .bookmark-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .bookmark-btn.bookmarked {
+            color: #ef4444;
+        }
+
+        /* Speakers Grid */
+        .speakers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .speaker-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .speaker-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .speaker-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .speaker-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .speaker-title {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .speaker-sessions {
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        /* Day Toggle */
+        .day-toggle {
+            display: flex;
+            background: #f3f4f6;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 30px;
+            width: fit-content;
+        }
+
+        .day-btn {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .day-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Featured Badge */
+        .featured-badge {
+            position: absolute;
+            top: -2px;
+            left: 15px;
+            background: #fbbf24;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 0 0 8px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            font-size: 14px;
+            background: #f9fafb;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Modal/Dropdown */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 5px;
+            border-radius: 6px;
+        }
+
+        .close-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .modal-session-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-session-item {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .modal-session-item:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+        .modal-session-item.live {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .modal-session-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .modal-session-time {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .modal-session-status {
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .modal-session-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .modal-session-speaker {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .modal-session-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .sessions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .masthead {
+                padding: 40px 20px;
+            }
+
+            .masthead h1 {
+                font-size: 36px;
+            }
+
+            .event-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .modal {
+                margin: 10px;
+                max-height: 90vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">TechConnect 2024</div>
+        <div class="header-info">
+            <div class="event-day-indicator" id="dayIndicator" onclick="showLiveSessionsModal()">
+                <div class="live-dot" id="indicatorDot"></div>
+                <span id="indicatorText">3 sessions live now</span>
+            </div>
+            <div class="user-info">
+                <div class="bookmark-count" onclick="showBookmarkedSessionsModal()">📚 <span id="bookmarkCount">7</span> bookmarked</div>
+                <div style="font-size: 14px;">Welcome, Alex Chen</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <div class="nav-tab active">Lobby</div>
+        <div class="nav-tab">My Agenda</div>
+        <div class="nav-tab">All Sessions</div>
+        <div class="nav-tab">Speakers</div>
+        <div class="nav-tab">Networking</div>
+    </div>
+
+    <!-- Masthead -->
+    <div class="masthead">
+        <div class="masthead-content">
+            <h1 id="mastheadTitle">Welcome to TechConnect 2024</h1>
+            <p id="mastheadSubtitle">The Future of Technology - Two Days of Innovation and Discovery</p>
+            <div class="event-stats" id="eventStats">
+                <div class="stat">
+                    <span class="stat-number">100+</span>
+                    <span class="stat-label">Sessions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">150+</span>
+                    <span class="stat-label">Speakers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5000+</span>
+                    <span class="stat-label">Attendees</span>
+                </div>
+            </div>
+            <div class="countdown-timer" id="countdownTimer">
+                <div class="countdown-label">Day 2 starts in</div>
+                <div class="countdown-time" id="countdownTime">18:24:35</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Day Toggle -->
+        <div class="day-toggle">
+            <button class="day-btn active" onclick="switchDay(1)">Day 1 - March 15</button>
+            <button class="day-btn" onclick="switchDay(2)">Day 2 - March 16</button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search sessions, speakers, topics...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <button class="filter-btn active" onclick="filterSessions('all')">All Sessions</button>
+            <button class="filter-btn" id="liveFilterBtn" onclick="filterSessions('live')">Live Now</button>
+            <button class="filter-btn" onclick="filterSessions('future')">Upcoming</button>
+            <button class="action-btn">📅 Download Schedule</button>
+        </div>
+
+        <!-- Live Sessions (Priority Section) -->
+        <div class="section" id="live-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Live Now</h2>
+                    <p class="section-subtitle">Join these sessions happening right now</p>
+                </div>
+                <a href="#" class="view-all">View all live →</a>
+            </div>
+            <div class="sessions-grid" id="live-sessions">
+                <!-- Live sessions will be populated here -->
+            </div>
+        </div>
+
+        <!-- Upcoming Sessions (moved to 2nd row) -->
+        <div class="section" id="upcoming-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Coming Up Next</h2>
+                    <p class="section-subtitle">Sessions starting in the next 2 hours</p>
+                </div>
+                <a href="#" class="view-all">View full schedule →</a>
+            </div>
+            <div class="sessions-grid" id="upcoming-sessions">
+                <!-- Upcoming sessions will be populated here -->
+            </div>
+        </div>
+
+        <!-- Featured Sessions for Today -->
+        <div class="section" id="featured-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Featured Sessions - Day 1</h2>
+                    <p class="section-subtitle">Don't miss these highlighted sessions</p>
+                </div>
+                <a href="#" class="view-all">View all featured →</a>
+            </div>
+            <div class="sessions-grid" id="featured-sessions">
+                <!-- Featured sessions will be populated here -->
+            </div>
+        </div>
+
+        <!-- More Sessions -->
+        <div class="section" id="more-sessions" style="display: none;">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">More Day 2 Sessions</h2>
+                    <p class="section-subtitle">Discover additional cutting-edge topics</p>
+                </div>
+                <a href="#" class="view-all">View all Day 2 sessions →</a>
+            </div>
+            <div class="sessions-grid" id="more-sessions-grid">
+                <!-- More sessions will be populated here -->
+            </div>
+        </div>
+
+        <!-- Finished Sessions -->
+        <div class="section" id="finished-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Finished Sessions</h2>
+                    <p class="section-subtitle">Watch recordings of completed sessions</p>
+                </div>
+                <a href="#" class="view-all">View all recordings →</a>
+            </div>
+            <div class="sessions-grid" id="finished-sessions">
+                <!-- Finished sessions will be populated here -->
+            </div>
+        </div>
+
+        <!-- Featured Speakers (moved to bottom during event) -->
+        <div class="section" id="speakers-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Featured Speakers</h2>
+                    <p class="section-subtitle">Meet our amazing lineup of industry experts</p>
+                </div>
+                <a href="#" class="view-all">View all speakers →</a>
+            </div>
+            <div class="speakers-grid" id="featured-speakers">
+                <!-- Speakers will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Sessions Modal -->
+    <div class="modal-overlay" id="liveSessionsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Live Sessions</h2>
+                <button class="close-btn" onclick="closeLiveSessionsModal()">×</button>
+            </div>
+            <div class="modal-session-list">
+                <div class="modal-session-item live">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">10:00 AM - 11:00 AM</div>
+                        <div class="modal-session-status status-live">Live</div>
+                    </div>
+                    <div class="modal-session-title">Neural Networks & Deep Learning Frontiers</div>
+                    <div class="modal-session-speaker">👤 Dr. Sarah Chen, MIT AI Lab</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-primary live">Join</button>
+                    </div>
+                </div>
+                <div class="modal-session-item live">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">10:30 AM - 11:30 AM</div>
+                        <div class="modal-session-status status-live">Live</div>
+                    </div>
+                    <div class="modal-session-title">Quantum Computing Breakthrough Applications</div>
+                    <div class="modal-session-speaker">👤 Prof. Michael Zhang, IBM Research</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-primary live">Join</button>
+                    </div>
+                </div>
+                <div class="modal-session-item live">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">10:15 AM - 11:15 AM</div>
+                        <div class="modal-session-status status-live">Live</div>
+                    </div>
+                    <div class="modal-session-title">Blockchain Infrastructure & Scalability</div>
+                    <div class="modal-session-speaker">👤 Elena Rodriguez, Ethereum Foundation</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-primary live">Join</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookmarked Sessions Modal -->
+    <div class="modal-overlay" id="bookmarkedSessionsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">My Bookmarked Sessions</h2>
+                <button class="close-btn" onclick="closeBookmarkedSessionsModal()">×</button>
+            </div>
+            <div class="modal-session-list">
+                <!-- Day 1 bookmarks -->
+                <div style="font-weight: bold; color: #6b7280; margin: 20px 0 10px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">Day 1 Bookmarks</div>
+                <div class="modal-session-item live">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">10:30 AM - 11:30 AM</div>
+                        <div class="modal-session-status status-live">Live</div>
+                    </div>
+                    <div class="modal-session-title">Quantum Computing Breakthrough Applications</div>
+                    <div class="modal-session-speaker">👤 Prof. Michael Zhang, IBM Research</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-primary live">Join</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">12:30 PM - 1:30 PM</div>
+                        <div class="modal-session-status status-future">Upcoming</div>
+                    </div>
+                    <div class="modal-session-title">Cybersecurity in AI Systems</div>
+                    <div class="modal-session-speaker">👤 James Wilson, Microsoft Security</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">Start in 1 hour</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">2:00 PM - 3:00 PM</div>
+                        <div class="modal-session-status status-future">Upcoming</div>
+                    </div>
+                    <div class="modal-session-title">The Future of Autonomous Vehicles</div>
+                    <div class="modal-session-speaker">👤 David Chen, Tesla Autopilot</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">Start in 1 hour</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">4:00 PM - 5:00 PM</div>
+                        <div class="modal-session-status status-future">Upcoming</div>
+                    </div>
+                    <div class="modal-session-title">Web3 & Decentralized Applications</div>
+                    <div class="modal-session-speaker">👤 Alex Kumar, Coinbase</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">Start in 1 hour</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">8:00 AM - 9:00 AM</div>
+                        <div class="modal-session-status status-finished">Ended</div>
+                    </div>
+                    <div class="modal-session-title">DevOps & Cloud Infrastructure</div>
+                    <div class="modal-session-speaker">👤 Tom Anderson, Docker</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">Watch Recording</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <!-- Day 2 bookmarks -->
+                <div style="font-weight: bold; color: #6b7280; margin: 20px 0 10px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">Day 2 Bookmarks</div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">9:00 AM - 10:00 AM</div>
+                        <div class="modal-session-status status-future">Tomorrow</div>
+                    </div>
+                    <div class="modal-session-title">Advanced Machine Learning Operations</div>
+                    <div class="modal-session-speaker">👤 Dr. Amanda White, Netflix</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">View Details</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">2:00 PM - 3:00 PM</div>
+                        <div class="modal-session-status status-future">Tomorrow</div>
+                    </div>
+                    <div class="modal-session-title">Privacy-Preserving AI Systems</div>
+                    <div class="modal-session-speaker">👤 Dr. Kevin Park, Apple</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">View Details</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">11:00 AM - 12:00 PM</div>
+                        <div class="modal-session-status status-future">Tomorrow</div>
+                    </div>
+                    <div class="modal-session-title">Advanced Kubernetes Orchestration</div>
+                    <div class="modal-session-speaker">👤 Sarah Johnson, Google Kubernetes</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">View Details</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+                <div class="modal-session-item">
+                    <div class="modal-session-meta">
+                        <div class="modal-session-time">3:30 PM - 4:30 PM</div>
+                        <div class="modal-session-status status-future">Tomorrow</div>
+                    </div>
+                    <div class="modal-session-title">Distributed Systems Patterns</div>
+                    <div class="modal-session-speaker">👤 Michael Zhang, Uber Engineering</div>
+                    <div class="modal-session-actions">
+                        <button class="btn-secondary">View Details</button>
+                        <button class="bookmark-btn bookmarked">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for both days
+        const sessions = {
+            day1: [
+                {
+                    id: 1,
+                    title: "Neural Networks & Deep Learning Frontiers",
+                    time: "10:00 AM - 11:00 AM",
+                    speakers: "Dr. Sarah Chen, MIT AI Lab",
+                    description: "Exploring cutting-edge neural architecture and their applications in autonomous systems.",
+                    status: "live",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 2,
+                    title: "Quantum Computing Breakthrough Applications",
+                    time: "10:30 AM - 11:30 AM",
+                    speakers: "Prof. Michael Zhang, IBM Research",
+                    description: "Real-world quantum computing applications in cryptography and optimization.",
+                    status: "live",
+                    featured: false,
+                    bookmarked: true
+                },
+                {
+                    id: 3,
+                    title: "Blockchain Infrastructure & Scalability",
+                    time: "10:15 AM - 11:15 AM",
+                    speakers: "Elena Rodriguez, Ethereum Foundation",
+                    description: "Advanced blockchain architecture for enterprise-grade applications.",
+                    status: "live",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 4,
+                    title: "Edge Computing & IoT Integration",
+                    time: "12:00 PM - 1:00 PM",
+                    speakers: "Dr. Lisa Park, Google Cloud",
+                    description: "Building distributed computing systems for IoT device ecosystems.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 5,
+                    title: "Cybersecurity in AI Systems",
+                    time: "12:30 PM - 1:30 PM",
+                    speakers: "James Wilson, Microsoft Security",
+                    description: "Protecting AI models from adversarial attacks and data poisoning.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: true
+                },
+                {
+                    id: 6,
+                    title: "Serverless Architecture Patterns",
+                    time: "1:00 PM - 2:00 PM",
+                    speakers: "Rachel Kim, AWS",
+                    description: "Advanced serverless design patterns for scalable cloud applications.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 7,
+                    title: "The Future of Autonomous Vehicles",
+                    time: "2:00 PM - 3:00 PM",
+                    speakers: "David Chen, Tesla Autopilot",
+                    description: "Next-generation self-driving technology and safety protocols.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: true
+                },
+                {
+                    id: 8,
+                    title: "Sustainable Tech & Green Computing",
+                    time: "3:30 PM - 4:30 PM",
+                    speakers: "Maria Santos, Meta Sustainability",
+                    description: "Environmental impact reduction through efficient computing technologies.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: false
+                },
+                {
+                    id: 9,
+                    title: "Web3 & Decentralized Applications",
+                    time: "4:00 PM - 5:00 PM",
+                    speakers: "Alex Kumar, Coinbase",
+                    description: "Building the next generation of decentralized web applications.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: true
+                },
+                {
+                    id: 10,
+                    title: "AR/VR in Enterprise Applications",
+                    time: "5:00 PM - 6:00 PM",
+                    speakers: "Jennifer Lee, Meta Reality Labs",
+                    description: "Immersive technologies transforming workplace collaboration.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: false
+                },
+                {
+                    id: 11,
+                    title: "DevOps & Cloud Infrastructure",
+                    time: "8:00 AM - 9:00 AM",
+                    speakers: "Tom Anderson, Docker",
+                    description: "Modern containerization strategies and deployment pipelines.",
+                    status: "finished",
+                    featured: false,
+                    bookmarked: true,
+                    attended: true
+                },
+                {
+                    id: 12,
+                    title: "Data Engineering Best Practices",
+                    time: "8:30 AM - 9:30 AM",
+                    speakers: "Dr. Amy Zhou, Snowflake",
+                    description: "Building robust data pipelines for machine learning workflows.",
+                    status: "finished",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 13,
+                    title: "API Design & Microservices",
+                    time: "9:00 AM - 10:00 AM",
+                    speakers: "Marcus Brown, Stripe",
+                    description: "Scalable API architecture and service-oriented design patterns.",
+                    status: "finished",
+                    featured: false,
+                    bookmarked: false
+                }
+            ],
+            day2: [
+                {
+                    id: 21,
+                    title: "Advanced Machine Learning Operations",
+                    time: "9:00 AM - 10:00 AM",
+                    speakers: "Dr. Amanda White, Netflix",
+                    description: "Production-ready ML pipelines, monitoring, and automated model deployment strategies.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: true
+                },
+                {
+                    id: 22,
+                    title: "Next-Gen Database Technologies",
+                    time: "10:30 AM - 11:30 AM",
+                    speakers: "Robert Kim, MongoDB",
+                    description: "Vector databases, graph computing, and distributed systems for modern applications.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: false
+                },
+                {
+                    id: 23,
+                    title: "Privacy-Preserving AI Systems",
+                    time: "2:00 PM - 3:00 PM",
+                    speakers: "Dr. Kevin Park, Apple",
+                    description: "Federated learning, differential privacy, and secure multi-party computation.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: true
+                },
+                {
+                    id: 24,
+                    title: "The Future of Human-AI Collaboration",
+                    time: "4:00 PM - 5:00 PM",
+                    speakers: "Dr. Maya Patel, OpenAI",
+                    description: "Co-pilot systems, augmented intelligence, and ethical AI interaction design.",
+                    status: "future",
+                    featured: true,
+                    bookmarked: false
+                },
+                {
+                    id: 25,
+                    title: "Advanced Kubernetes Orchestration",
+                    time: "11:00 AM - 12:00 PM",
+                    speakers: "Sarah Johnson, Google Kubernetes",
+                    description: "Multi-cluster management, service mesh integration, and advanced deployment patterns.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: true
+                },
+                {
+                    id: 26,
+                    title: "WebAssembly & Edge Computing",
+                    time: "12:30 PM - 1:30 PM",
+                    speakers: "Alex Turner, Fastly",
+                    description: "High-performance computing at the edge with WebAssembly and distributed architectures.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 27,
+                    title: "Advanced React Performance",
+                    time: "1:00 PM - 2:00 PM",
+                    speakers: "Emily Chen, Meta React Team",
+                    description: "Concurrent features, server components, and optimization techniques for large-scale applications.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 28,
+                    title: "Distributed Systems Patterns",
+                    time: "3:30 PM - 4:30 PM",
+                    speakers: "Michael Zhang, Uber Engineering",
+                    description: "Event sourcing, CQRS, saga patterns, and building resilient distributed architectures.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: true
+                },
+                {
+                    id: 29,
+                    title: "Zero-Trust Security Architecture",
+                    time: "2:30 PM - 3:30 PM",
+                    speakers: "Lisa Rodriguez, Okta",
+                    description: "Identity-centric security models and implementing zero-trust principles at scale.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: false
+                },
+                {
+                    id: 30,
+                    title: "Quantum-Safe Cryptography",
+                    time: "5:00 PM - 6:00 PM",
+                    speakers: "Dr. James Wilson, IBM Quantum",
+                    description: "Post-quantum cryptographic algorithms and preparing for the quantum computing era.",
+                    status: "future",
+                    featured: false,
+                    bookmarked: false
+                }
+            ]
+        };
+
+        const speakers = {
+            day1: [
+                { name: "Dr. Sarah Chen", title: "AI Research Director, MIT", initial: "S", sessions: "3 sessions" },
+                { name: "Prof. Michael Zhang", title: "Quantum Researcher, IBM", initial: "M", sessions: "2 sessions" },
+                { name: "Elena Rodriguez", title: "Security Lead, Ethereum", initial: "E", sessions: "4 sessions" },
+                { name: "David Chen", title: "Autopilot Lead, Tesla", initial: "D", sessions: "2 sessions" },
+                { name: "Dr. Lisa Park", title: "Cloud Architect, Google", initial: "L", sessions: "3 sessions" },
+                { name: "James Wilson", title: "Security VP, Microsoft", initial: "J", sessions: "2 sessions" }
+            ],
+            day2: [
+                { name: "Dr. Amanda White", title: "ML Platform Lead, Netflix", initial: "A", sessions: "2 sessions tomorrow" },
+                { name: "Dr. Kevin Park", title: "Privacy Engineering, Apple", initial: "K", sessions: "1 session tomorrow" },
+                { name: "Dr. Maya Patel", title: "Research Scientist, OpenAI", initial: "M", sessions: "1 session tomorrow" },
+                { name: "Robert Kim", title: "Principal Engineer, MongoDB", initial: "R", sessions: "2 sessions tomorrow" },
+                { name: "Sarah Johnson", title: "Staff SRE, Google Kubernetes", initial: "S", sessions: "1 session tomorrow" },
+                { name: "Emily Chen", title: "Senior Engineer, Meta React", initial: "E", sessions: "2 sessions tomorrow" }
+            ]
+        };
+
+        let currentDay = 1;
+        let currentFilter = 'all';
+
+        function init() {
+            updateDayContent();
+            setupEventListeners();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        function setupEventListeners() {
+            // Add event listeners as needed
+        }
+
+        function switchDay(day) {
+            currentDay = day;
+            
+            // Update day buttons
+            document.querySelectorAll('.day-btn').forEach((btn, index) => {
+                btn.classList.toggle('active', index + 1 === day);
+            });
+            
+            // Reset filter to "all" when switching days
+            currentFilter = 'all';
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn').classList.add('active');
+            
+            updateDayContent();
+        }
+
+        function updateDayContent() {
+            updateHeader();
+            updateMasthead();
+            updateQuickActions();
+            updateSections();
+            renderSpeakers();
+        }
+
+        function updateHeader() {
+            const indicatorDot = document.getElementById('indicatorDot');
+            const indicatorText = document.getElementById('indicatorText');
+            const dayIndicator = document.getElementById('dayIndicator');
+            const bookmarkCount = document.getElementById('bookmarkCount');
+            
+            if (currentDay === 1) {
+                indicatorDot.style.background = '#ef4444';
+                indicatorDot.style.animation = 'pulse 2s infinite';
+                indicatorText.textContent = '3 sessions live now';
+                dayIndicator.onclick = showLiveSessionsModal;
+                bookmarkCount.textContent = '7';
+            } else {
+                indicatorDot.style.background = '#fbbf24';
+                indicatorDot.style.animation = 'none';
+                indicatorText.textContent = 'Day 2 - Tomorrow';
+                dayIndicator.onclick = null;
+                bookmarkCount.textContent = '12';
+            }
+        }
+
+        function updateMasthead() {
+            const title = document.getElementById('mastheadTitle');
+            const subtitle = document.getElementById('mastheadSubtitle');
+            const eventStats = document.getElementById('eventStats');
+            const countdownTimer = document.getElementById('countdownTimer');
+            
+            if (currentDay === 1) {
+                title.textContent = 'Welcome to TechConnect 2024';
+                subtitle.textContent = 'The Future of Technology - Two Days of Innovation and Discovery';
+                eventStats.style.display = 'flex';
+                countdownTimer.classList.remove('show');
+            } else {
+                title.textContent = 'Day 2 - Innovation Continues';
+                subtitle.textContent = 'Advanced Tech Sessions & Deep Dives - March 16, 2024';
+                eventStats.style.display = 'none';
+                countdownTimer.classList.add('show');
+            }
+        }
+
+        function updateQuickActions() {
+            const searchInput = document.getElementById('searchInput');
+            const liveFilterBtn = document.getElementById('liveFilterBtn');
+            
+            if (currentDay === 1) {
+                searchInput.placeholder = 'Search sessions, speakers, topics...';
+                liveFilterBtn.style.display = 'block';
+                liveFilterBtn.textContent = 'Live Now';
+            } else {
+                searchInput.placeholder = 'Search Day 2 sessions, speakers, topics...';
+                liveFilterBtn.style.display = 'none';
+            }
+        }
+
+        function updateSections() {
+            const liveSection = document.getElementById('live-section');
+            const upcomingSection = document.getElementById('upcoming-section');
+            const featuredSection = document.getElementById('featured-section');
+            const finishedSection = document.getElementById('finished-section');
+            const moreSessionsSection = document.getElementById('more-sessions');
+            const speakersSection = document.getElementById('speakers-section');
+            
+            if (currentDay === 1) {
+                liveSection.style.display = 'block';
+                upcomingSection.style.display = 'block';
+                finishedSection.style.display = 'block';
+                moreSessionsSection.style.display = 'none';
+                
+                // Update section title
+                document.querySelector('#featured-section .section-title').textContent = 'Featured Sessions - Day 1';
+                
+                renderDay1Sessions();
+            } else {
+                liveSection.style.display = 'none';
+                upcomingSection.style.display = 'none';
+                finishedSection.style.display = 'none';
+                moreSessionsSection.style.display = 'block';
+                
+                // Update section title
+                document.querySelector('#featured-section .section-title').textContent = 'Featured Sessions - Day 2';
+                document.querySelector('#featured-section .section-subtitle').textContent = 'Unmissable advanced sessions for tomorrow';
+                
+                renderDay2Sessions();
+            }
+        }
+
+        function renderDay1Sessions() {
+            const dayData = sessions.day1;
+            
+            const liveSessions = dayData.filter(s => s.status === 'live');
+            const featuredSessions = dayData.filter(s => s.featured);
+            const upcomingSessions = dayData.filter(s => s.status === 'future').slice(0, 3);
+            const finishedSessions = dayData.filter(s => s.status === 'finished');
+            
+            renderSessionGrid('live-sessions', liveSessions);
+            renderSessionGrid('featured-sessions', featuredSessions);
+            renderSessionGrid('upcoming-sessions', upcomingSessions);
+            renderSessionGrid('finished-sessions', finishedSessions);
+        }
+
+        function renderDay2Sessions() {
+            const dayData = sessions.day2;
+            
+            const featuredSessions = dayData.filter(s => s.featured);
+            const moreSessions = dayData.filter(s => !s.featured);
+            
+            renderSessionGrid('featured-sessions', featuredSessions);
+            renderSessionGrid('more-sessions-grid', moreSessions);
+        }
+
+        function renderSessionGrid(containerId, sessionList) {
+            const container = document.getElementById(containerId);
+            
+            if (sessionList.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No sessions found</h3><p>Check back later or adjust your filters</p></div>';
+                return;
+            }
+
+            container.innerHTML = sessionList.map(session => `
+                <div class="session-card ${session.featured ? 'featured' : ''} ${session.bookmarked ? 'bookmarked' : ''}">
+                    ${session.featured ? '<div class="featured-badge">Featured</div>' : ''}
+                    ${session.attended ? '<div class="attended-badge" style="position: absolute; top: 15px; left: 15px; background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ You attended</div>' : ''}
+                    <div class="session-status status-${session.status}">
+                        ${session.status === 'live' ? 'Live' : 
+                          session.status === 'finished' ? 'Ended' : 
+                          currentDay === 2 ? 'Tomorrow' : 'Upcoming'}
+                    </div>
+                    <div class="session-time">${session.time}</div>
+                    <h3 class="session-title">${session.title}</h3>
+                    <div class="session-speakers">👤 ${session.speakers}</div>
+                    <div class="session-description">${session.description}</div>
+                    <div class="session-actions">
+                        <button class="btn-primary ${session.status === 'live' ? 'live' : session.status === 'finished' ? '' : 'btn-secondary'}" 
+                                onclick="handleSessionAction('${session.status}', ${session.id})">
+                            ${session.status === 'live' ? 'Join' : 
+                              session.status === 'finished' ? 'Watch Recording' : 
+                              currentDay === 2 ? 'View Details' : 'Start in 1 hour'}
+                        </button>
+                        <button class="bookmark-btn ${session.bookmarked ? 'bookmarked' : ''}" 
+                                onclick="toggleBookmark(${session.id})" 
+                                title="${session.bookmarked ? 'Remove bookmark' : 'Add bookmark'}">
+                            ${session.bookmarked ? '❤️' : '🤍'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSpeakers() {
+            const container = document.getElementById('featured-speakers');
+            const speakerData = speakers[`day${currentDay}`];
+            
+            container.innerHTML = speakerData.map(speaker => `
+                <div class="speaker-card">
+                    <div class="speaker-avatar">${speaker.initial}</div>
+                    <div class="speaker-name">${speaker.name}</div>
+                    <div class="speaker-title">${speaker.title}</div>
+                    <div class="speaker-sessions">${speaker.sessions}</div>
+                </div>
+            `).join('');
+        }
+
+        function filterSessions(filter) {
+            currentFilter = filter;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateSections();
+        }
+
+        function handleSessionAction(status, sessionId) {
+            if (status === 'live') {
+                alert(`Joining live session ${sessionId}...`);
+            } else if (status === 'finished') {
+                alert(`Opening recording for session ${sessionId}...`);
+            } else {
+                alert(`Viewing details for session ${sessionId}...`);
+            }
+        }
+
+        function toggleBookmark(sessionId) {
+            // Find and toggle bookmark in the appropriate day's data
+            let sessionFound = false;
+            
+            for (let day in sessions) {
+                const session = sessions[day].find(s => s.id === sessionId);
+                if (session) {
+                    session.bookmarked = !session.bookmarked;
+                    sessionFound = true;
+                    break;
+                }
+            }
+            
+            if (sessionFound) {
+                updateDayContent(); // Re-render to show updated bookmark state
+                updateHeader(); // Update bookmark count
+            }
+        }
+
+        function showLiveSessionsModal() {
+            if (currentDay === 1) {
+                document.getElementById('liveSessionsModal').style.display = 'flex';
+            }
+        }
+
+        function closeLiveSessionsModal() {
+            document.getElementById('liveSessionsModal').style.display = 'none';
+        }
+
+        function showBookmarkedSessionsModal() {
+            document.getElementById('bookmarkedSessionsModal').style.display = 'flex';
+        }
+
+        function closeBookmarkedSessionsModal() {
+            document.getElementById('bookmarkedSessionsModal').style.display = 'none';
+        }
+
+        function updateCountdown() {
+            const countdownElement = document.getElementById('countdownTime');
+            if (countdownElement && currentDay === 2) {
+                const now = new Date();
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(9, 0, 0, 0); // 9 AM tomorrow
+                
+                const timeDiff = tomorrow - now;
+                
+                if (timeDiff > 0) {
+                    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+                    
+                    countdownElement.textContent = 
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+        }
+
+        // Close modals when clicking overlay
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('liveSessionsModal').style.display = 'none';
+                document.getElementById('bookmarkedSessionsModal').style.display = 'none';
+            }
+        });
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
