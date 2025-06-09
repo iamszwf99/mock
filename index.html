@@ -297,7 +297,13 @@
             background: #f3f4f6;
         }
 
-        /* Drag and Drop Styles */
+        /* Session Cards */
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
         .session-card {
             background: white;
             border-radius: 12px;
@@ -307,140 +313,6 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            cursor: move;
-        }
-
-        .session-card.dragging {
-            opacity: 0.5;
-            transform: rotate(5deg);
-            z-index: 1000;
-        }
-
-        .session-card.drag-over {
-            border-color: #667eea;
-            transform: translateY(-5px);
-        }
-
-        .drag-handle {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: #9ca3af;
-            cursor: grab;
-            font-size: 18px;
-            padding: 5px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .drag-handle:hover {
-            background: rgba(0,0,0,0.1);
-            color: #667eea;
-        }
-
-        .drag-handle:active {
-            cursor: grabbing;
-        }
-
-        /* Editable Content Styles */
-        .editable {
-            position: relative;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .editable:hover {
-            background: rgba(102, 126, 234, 0.1);
-            outline: 1px dashed #667eea;
-        }
-
-        .editable.editing {
-            background: white;
-            outline: 2px solid #667eea;
-            padding: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .edit-indicator {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #667eea;
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .editable:hover .edit-indicator {
-            display: flex;
-        }
-
-        /* Edit Mode Toggle */
-        .edit-mode-toggle {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-            z-index: 1001;
-            transition: all 0.3s ease;
-        }
-
-        .edit-mode-toggle:hover {
-            background: #5b6fd8;
-            transform: translateY(-2px);
-        }
-
-        .edit-mode-toggle.active {
-            background: #ef4444;
-        }
-
-        /* Save/Export Panel */
-        .save-panel {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: none;
-            gap: 10px;
-            z-index: 1001;
-        }
-
-        .save-panel.show {
-            display: flex;
-        }
-
-        .save-btn {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        /* Session Cards */
-        .sessions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
         }
 
         .session-card:hover {
@@ -872,18 +744,6 @@
     </style>
 </head>
 <body>
-    <!-- Edit Mode Toggle -->
-    <button class="edit-mode-toggle" id="editModeToggle" onclick="toggleEditMode()">
-        📝 Edit Mode
-    </button>
-
-    <!-- Save Panel -->
-    <div class="save-panel" id="savePanel">
-        <button class="save-btn" onclick="saveChanges()">💾 Save Changes</button>
-        <button class="save-btn" onclick="exportPage()">📄 Export HTML</button>
-        <button class="save-btn" onclick="resetChanges()">🔄 Reset</button>
-    </div>
-
     <!-- Header -->
     <div class="header">
         <div class="logo">TechConnect 2024</div>
@@ -911,14 +771,8 @@
     <!-- Masthead -->
     <div class="masthead">
         <div class="masthead-content">
-            <h1 id="mastheadTitle" class="editable" onclick="makeEditable(this)">
-                Welcome to TechConnect 2024
-                <span class="edit-indicator">✏️</span>
-            </h1>
-            <p id="mastheadSubtitle" class="editable" onclick="makeEditable(this)">
-                The Future of Technology - Two Days of Innovation and Discovery
-                <span class="edit-indicator">✏️</span>
-            </p>
+            <h1 id="mastheadTitle">Welcome to TechConnect 2024</h1>
+            <p id="mastheadSubtitle">The Future of Technology - Two Days of Innovation and Discovery</p>
             <div class="event-stats" id="eventStats">
                 <div class="stat">
                     <span class="stat-number">100+</span>
@@ -963,14 +817,8 @@
         <div class="section" id="live-section">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title editable" onclick="makeEditable(this)">
-                        Live Now
-                        <span class="edit-indicator">✏️</span>
-                    </h2>
-                    <p class="section-subtitle editable" onclick="makeEditable(this)">
-                        Join these sessions happening right now
-                        <span class="edit-indicator">✏️</span>
-                    </p>
+                    <h2 class="section-title">Live Now</h2>
+                    <p class="section-subtitle">Join these sessions happening right now</p>
                 </div>
                 <a href="#" class="view-all">View all live →</a>
             </div>
@@ -983,14 +831,8 @@
         <div class="section" id="upcoming-section">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title editable" onclick="makeEditable(this)">
-                        Coming Up Next
-                        <span class="edit-indicator">✏️</span>
-                    </h2>
-                    <p class="section-subtitle editable" onclick="makeEditable(this)">
-                        Sessions starting in the next 2 hours
-                        <span class="edit-indicator">✏️</span>
-                    </p>
+                    <h2 class="section-title">Coming Up Next</h2>
+                    <p class="section-subtitle">Sessions starting in the next 2 hours</p>
                 </div>
                 <a href="#" class="view-all">View full schedule →</a>
             </div>
@@ -1003,14 +845,8 @@
         <div class="section" id="featured-section">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title editable" onclick="makeEditable(this)">
-                        Featured Sessions - Day 1
-                        <span class="edit-indicator">✏️</span>
-                    </h2>
-                    <p class="section-subtitle editable" onclick="makeEditable(this)">
-                        Don't miss these highlighted sessions
-                        <span class="edit-indicator">✏️</span>
-                    </p>
+                    <h2 class="section-title">Featured Sessions - Day 1</h2>
+                    <p class="section-subtitle">Don't miss these highlighted sessions</p>
                 </div>
                 <a href="#" class="view-all">View all featured →</a>
             </div>
@@ -1023,14 +859,8 @@
         <div class="section" id="more-sessions" style="display: none;">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title editable" onclick="makeEditable(this)">
-                        More Day 2 Sessions
-                        <span class="edit-indicator">✏️</span>
-                    </h2>
-                    <p class="section-subtitle editable" onclick="makeEditable(this)">
-                        Discover additional cutting-edge topics
-                        <span class="edit-indicator">✏️</span>
-                    </p>
+                    <h2 class="section-title">More Day 2 Sessions</h2>
+                    <p class="section-subtitle">Discover additional cutting-edge topics</p>
                 </div>
                 <a href="#" class="view-all">View all Day 2 sessions →</a>
             </div>
@@ -1043,14 +873,8 @@
         <div class="section" id="finished-section">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title editable" onclick="makeEditable(this)">
-                        Finished Sessions
-                        <span class="edit-indicator">✏️</span>
-                    </h2>
-                    <p class="section-subtitle editable" onclick="makeEditable(this)">
-                        Watch recordings of completed sessions
-                        <span class="edit-indicator">✏️</span>
-                    </p>
+                    <h2 class="section-title">Finished Sessions</h2>
+                    <p class="section-subtitle">Watch recordings of completed sessions</p>
                 </div>
                 <a href="#" class="view-all">View all recordings →</a>
             </div>
@@ -1063,14 +887,8 @@
         <div class="section" id="speakers-section">
             <div class="section-header">
                 <div>
-                    <h2 class="section-title editable" onclick="makeEditable(this)">
-                        Featured Speakers
-                        <span class="edit-indicator">✏️</span>
-                    </h2>
-                    <p class="section-subtitle editable" onclick="makeEditable(this)">
-                        Meet our amazing lineup of industry experts
-                        <span class="edit-indicator">✏️</span>
-                    </p>
+                    <h2 class="section-title">Featured Speakers</h2>
+                    <p class="section-subtitle">Meet our amazing lineup of industry experts</p>
                 </div>
                 <a href="#" class="view-all">View all speakers →</a>
             </div>
@@ -1510,273 +1328,16 @@
 
         let currentDay = 1;
         let currentFilter = 'all';
-        let editMode = false;
-        let draggedElement = null;
-        let originalContent = {};
 
         function init() {
             updateDayContent();
             setupEventListeners();
             updateCountdown();
             setInterval(updateCountdown, 1000);
-            setupDragAndDrop();
         }
 
         function setupEventListeners() {
-            // Store original content for reset functionality
-            storeOriginalContent();
-        }
-
-        function storeOriginalContent() {
-            originalContent = {
-                sessions: JSON.parse(JSON.stringify(sessions)),
-                speakers: JSON.parse(JSON.stringify(speakers)),
-                titles: {}
-            };
-            
-            // Store original text content
-            document.querySelectorAll('.editable').forEach(el => {
-                originalContent.titles[el.id || el.className] = el.textContent.replace('✏️', '').trim();
-            });
-        }
-
-        // Edit Mode Functions
-        function toggleEditMode() {
-            editMode = !editMode;
-            const toggleBtn = document.getElementById('editModeToggle');
-            const savePanel = document.getElementById('savePanel');
-            
-            if (editMode) {
-                toggleBtn.textContent = '🔒 Exit Edit Mode';
-                toggleBtn.classList.add('active');
-                savePanel.classList.add('show');
-                document.body.style.paddingBottom = '100px';
-            } else {
-                toggleBtn.textContent = '📝 Edit Mode';
-                toggleBtn.classList.remove('active');
-                savePanel.classList.remove('show');
-                document.body.style.paddingBottom = '0';
-                
-                // Exit any active editing
-                document.querySelectorAll('.editing').forEach(el => {
-                    el.classList.remove('editing');
-                    el.contentEditable = false;
-                });
-            }
-        }
-
-        function makeEditable(element) {
-            if (!editMode) return;
-            
-            // Remove edit indicator text
-            const text = element.textContent.replace('✏️', '').trim();
-            element.textContent = text;
-            
-            element.classList.add('editing');
-            element.contentEditable = true;
-            element.focus();
-            
-            // Select all text
-            const range = document.createRange();
-            range.selectNodeContents(element);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            
-            element.addEventListener('blur', function() {
-                element.classList.remove('editing');
-                element.contentEditable = false;
-                // Re-add edit indicator
-                if (editMode) {
-                    element.innerHTML = element.textContent + '<span class="edit-indicator">✏️</span>';
-                }
-            });
-            
-            element.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    element.blur();
-                }
-            });
-        }
-
-        // Drag and Drop Functions
-        function setupDragAndDrop() {
-            document.addEventListener('dragover', handleDragOver);
-            document.addEventListener('drop', handleDrop);
-        }
-
-        function handleDragStart(e, sessionId, containerId) {
-            if (!editMode) {
-                e.preventDefault();
-                return;
-            }
-            
-            draggedElement = {
-                sessionId: sessionId,
-                sourceContainer: containerId,
-                element: e.target.closest('.session-card')
-            };
-            
-            e.target.closest('.session-card').classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', e.target.outerHTML);
-        }
-
-        function handleDragOver(e) {
-            if (!draggedElement) return;
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            
-            const afterElement = getDragAfterElement(e.target.closest('.sessions-grid'), e.clientY);
-            const dragOverCard = e.target.closest('.session-card');
-            
-            if (dragOverCard && dragOverCard !== draggedElement.element) {
-                dragOverCard.classList.add('drag-over');
-                setTimeout(() => dragOverCard.classList.remove('drag-over'), 100);
-            }
-        }
-
-        function handleDrop(e) {
-            if (!draggedElement) return;
-            e.preventDefault();
-            
-            const targetGrid = e.target.closest('.sessions-grid');
-            const targetCard = e.target.closest('.session-card');
-            
-            if (targetGrid && targetCard && targetCard !== draggedElement.element) {
-                const targetContainerId = targetGrid.id;
-                reorderSessions(draggedElement.sessionId, draggedElement.sourceContainer, targetContainerId, targetCard);
-            }
-            
-            // Cleanup
-            document.querySelectorAll('.session-card').forEach(card => {
-                card.classList.remove('dragging', 'drag-over');
-            });
-            draggedElement = null;
-        }
-
-        function getDragAfterElement(container, y) {
-            const draggableElements = [...container.querySelectorAll('.session-card:not(.dragging)')];
-            
-            return draggableElements.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-                
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
-        }
-
-        function reorderSessions(sessionId, sourceContainer, targetContainer, targetElement) {
-            // Find the session in the data
-            let session = null;
-            let sourceArray = null;
-            
-            // Find session in current day's data
-            for (let day in sessions) {
-                const found = sessions[day].find(s => s.id === sessionId);
-                if (found) {
-                    session = found;
-                    sourceArray = sessions[day];
-                    break;
-                }
-            }
-            
-            if (!session) return;
-            
-            // Get target position
-            const targetSessionId = parseInt(targetElement.dataset.sessionId);
-            const targetArray = getSessionArrayByContainerId(targetContainer);
-            const targetIndex = targetArray.findIndex(s => s.id === targetSessionId);
-            
-            // Remove from source and insert at target position
-            const sourceIndex = sourceArray.indexOf(session);
-            sourceArray.splice(sourceIndex, 1);
-            
-            if (targetArray !== sourceArray) {
-                targetArray.splice(targetIndex, 0, session);
-            } else {
-                const newIndex = targetIndex > sourceIndex ? targetIndex - 1 : targetIndex;
-                targetArray.splice(newIndex, 0, session);
-            }
-            
-            // Re-render the affected sections
-            updateDayContent();
-        }
-
-        function getSessionArrayByContainerId(containerId) {
-            const dayData = sessions[`day${currentDay}`];
-            
-            switch(containerId) {
-                case 'live-sessions':
-                    return dayData.filter(s => s.status === 'live');
-                case 'featured-sessions':
-                    return dayData.filter(s => s.featured);
-                case 'upcoming-sessions':
-                    return dayData.filter(s => s.status === 'future');
-                case 'finished-sessions':
-                    return dayData.filter(s => s.status === 'finished');
-                case 'more-sessions-grid':
-                    return dayData.filter(s => !s.featured);
-                default:
-                    return dayData;
-            }
-        }
-
-        // Save/Export Functions
-        function saveChanges() {
-            const data = {
-                sessions: sessions,
-                speakers: speakers,
-                titles: {},
-                timestamp: new Date().toISOString()
-            };
-            
-            // Save current text content
-            document.querySelectorAll('.editable').forEach(el => {
-                data.titles[el.id || el.className] = el.textContent.replace('✏️', '').trim();
-            });
-            
-            localStorage.setItem('eventLobbyData', JSON.stringify(data));
-            alert('Changes saved successfully!');
-        }
-
-        function exportPage() {
-            const pageContent = document.documentElement.outerHTML;
-            const blob = new Blob([pageContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'event-lobby-customized.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function resetChanges() {
-            if (confirm('Are you sure you want to reset all changes?')) {
-                sessions = JSON.parse(JSON.stringify(originalContent.sessions));
-                speakers = JSON.parse(JSON.stringify(originalContent.speakers));
-                
-                // Reset text content
-                document.querySelectorAll('.editable').forEach(el => {
-                    const originalText = originalContent.titles[el.id || el.className];
-                    if (originalText) {
-                        if (editMode) {
-                            el.innerHTML = originalText + '<span class="edit-indicator">✏️</span>';
-                        } else {
-                            el.textContent = originalText;
-                        }
-                    }
-                });
-                
-                updateDayContent();
-                alert('Changes reset successfully!');
-            }
+            // Add event listeners as needed
         }
 
         function switchDay(day) {
@@ -1831,31 +1392,13 @@
             const countdownTimer = document.getElementById('countdownTimer');
             
             if (currentDay === 1) {
-                const titleText = 'Welcome to TechConnect 2024';
-                const subtitleText = 'The Future of Technology - Two Days of Innovation and Discovery';
-                
-                if (editMode) {
-                    title.innerHTML = titleText + '<span class="edit-indicator">✏️</span>';
-                    subtitle.innerHTML = subtitleText + '<span class="edit-indicator">✏️</span>';
-                } else {
-                    title.textContent = titleText;
-                    subtitle.textContent = subtitleText;
-                }
-                
+                title.textContent = 'Welcome to TechConnect 2024';
+                subtitle.textContent = 'The Future of Technology - Two Days of Innovation and Discovery';
                 eventStats.style.display = 'flex';
                 countdownTimer.classList.remove('show');
             } else {
-                const titleText = 'Day 2 - Innovation Continues';
-                const subtitleText = 'Advanced Tech Sessions & Deep Dives - March 16, 2024';
-                
-                if (editMode) {
-                    title.innerHTML = titleText + '<span class="edit-indicator">✏️</span>';
-                    subtitle.innerHTML = subtitleText + '<span class="edit-indicator">✏️</span>';
-                } else {
-                    title.textContent = titleText;
-                    subtitle.textContent = subtitleText;
-                }
-                
+                title.textContent = 'Day 2 - Innovation Continues';
+                subtitle.textContent = 'Advanced Tech Sessions & Deep Dives - March 16, 2024';
                 eventStats.style.display = 'none';
                 countdownTimer.classList.add('show');
             }
@@ -1881,6 +1424,7 @@
             const featuredSection = document.getElementById('featured-section');
             const finishedSection = document.getElementById('finished-section');
             const moreSessionsSection = document.getElementById('more-sessions');
+            const speakersSection = document.getElementById('speakers-section');
             
             if (currentDay === 1) {
                 liveSection.style.display = 'block';
@@ -1888,17 +1432,8 @@
                 finishedSection.style.display = 'block';
                 moreSessionsSection.style.display = 'none';
                 
-                // Update section titles
-                const featuredTitle = document.querySelector('#featured-section .section-title');
-                const featuredSubtitle = document.querySelector('#featured-section .section-subtitle');
-                
-                if (editMode) {
-                    featuredTitle.innerHTML = 'Featured Sessions - Day 1<span class="edit-indicator">✏️</span>';
-                    featuredSubtitle.innerHTML = 'Don\'t miss these highlighted sessions<span class="edit-indicator">✏️</span>';
-                } else {
-                    featuredTitle.textContent = 'Featured Sessions - Day 1';
-                    featuredSubtitle.textContent = 'Don\'t miss these highlighted sessions';
-                }
+                // Update section title
+                document.querySelector('#featured-section .section-title').textContent = 'Featured Sessions - Day 1';
                 
                 renderDay1Sessions();
             } else {
@@ -1907,17 +1442,9 @@
                 finishedSection.style.display = 'none';
                 moreSessionsSection.style.display = 'block';
                 
-                // Update section titles
-                const featuredTitle = document.querySelector('#featured-section .section-title');
-                const featuredSubtitle = document.querySelector('#featured-section .section-subtitle');
-                
-                if (editMode) {
-                    featuredTitle.innerHTML = 'Featured Sessions - Day 2<span class="edit-indicator">✏️</span>';
-                    featuredSubtitle.innerHTML = 'Unmissable advanced sessions for tomorrow<span class="edit-indicator">✏️</span>';
-                } else {
-                    featuredTitle.textContent = 'Featured Sessions - Day 2';
-                    featuredSubtitle.textContent = 'Unmissable advanced sessions for tomorrow';
-                }
+                // Update section title
+                document.querySelector('#featured-section .section-title').textContent = 'Featured Sessions - Day 2';
+                document.querySelector('#featured-section .section-subtitle').textContent = 'Unmissable advanced sessions for tomorrow';
                 
                 renderDay2Sessions();
             }
@@ -1956,11 +1483,7 @@
             }
 
             container.innerHTML = sessionList.map(session => `
-                <div class="session-card ${session.featured ? 'featured' : ''} ${session.bookmarked ? 'bookmarked' : ''}" 
-                     draggable="${editMode}" 
-                     data-session-id="${session.id}"
-                     ondragstart="handleDragStart(event, ${session.id}, '${containerId}')">
-                    ${editMode ? '<div class="drag-handle">⋮⋮</div>' : ''}
+                <div class="session-card ${session.featured ? 'featured' : ''} ${session.bookmarked ? 'bookmarked' : ''}">
                     ${session.featured ? '<div class="featured-badge">Featured</div>' : ''}
                     ${session.attended ? '<div class="attended-badge" style="position: absolute; top: 15px; left: 15px; background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ You attended</div>' : ''}
                     <div class="session-status status-${session.status}">
@@ -1968,29 +1491,16 @@
                           session.status === 'finished' ? 'Ended' : 
                           currentDay === 2 ? 'Tomorrow' : 'Upcoming'}
                     </div>
-                    <div class="session-time ${editMode ? 'editable' : ''}" ${editMode ? 'onclick="makeEditable(this)"' : ''}>
-                        ${session.time}
-                        ${editMode ? '<span class="edit-indicator">✏️</span>' : ''}
-                    </div>
-                    <h3 class="session-title ${editMode ? 'editable' : ''}" ${editMode ? 'onclick="makeEditable(this)"' : ''}>
-                        ${session.title}
-                        ${editMode ? '<span class="edit-indicator">✏️</span>' : ''}
-                    </h3>
-                    <div class="session-speakers ${editMode ? 'editable' : ''}" ${editMode ? 'onclick="makeEditable(this)"' : ''}>
-                        👤 ${session.speakers}
-                        ${editMode ? '<span class="edit-indicator">✏️</span>' : ''}
-                    </div>
-                    <div class="session-description ${editMode ? 'editable' : ''}" ${editMode ? 'onclick="makeEditable(this)"' : ''}>
-                        ${session.description}
-                        ${editMode ? '<span class="edit-indicator">✏️</span>' : ''}
-                    </div>
+                    <div class="session-time">${session.time}</div>
+                    <h3 class="session-title">${session.title}</h3>
+                    <div class="session-speakers">👤 ${session.speakers}</div>
+                    <div class="session-description">${session.description}</div>
                     <div class="session-actions">
-                        <button class="btn-primary ${session.status === 'live' ? 'live' : session.status === 'finished' ? '' : 'btn-secondary'} ${editMode ? 'editable' : ''}" 
-                                onclick="${editMode ? 'makeEditable(this)' : `handleSessionAction('${session.status}', ${session.id})`}">
+                        <button class="btn-primary ${session.status === 'live' ? 'live' : session.status === 'finished' ? '' : 'btn-secondary'}" 
+                                onclick="handleSessionAction('${session.status}', ${session.id})">
                             ${session.status === 'live' ? 'Join' : 
                               session.status === 'finished' ? 'Watch Recording' : 
                               currentDay === 2 ? 'View Details' : 'Start in 1 hour'}
-                            ${editMode ? '<span class="edit-indicator">✏️</span>' : ''}
                         </button>
                         <button class="bookmark-btn ${session.bookmarked ? 'bookmarked' : ''}" 
                                 onclick="toggleBookmark(${session.id})" 
