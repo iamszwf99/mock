@@ -770,19 +770,38 @@
         .bookmark-btn {
             background: none;
             border: none;
-            font-size: 20px;
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             border-radius: 6px;
             transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .bookmark-btn:hover {
             background: #f3f4f6;
         }
 
-        .bookmark-btn.bookmarked {
-            color: #2563eb;
+        .bookmark-btn:hover .bookmark-icon {
+            background: #9ca3af;
+        }
+
+        .bookmark-btn.bookmarked:hover .bookmark-icon {
+            background: #1d4ed8;
+        }
+
+        .bookmark-icon {
+            width: 16px;
+            height: 18px;
+            background: #d1d5db;
+            transition: all 0.3s ease;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 50% 100%, 0% 75%);
+        }
+
+        .bookmark-btn.bookmarked .bookmark-icon {
+            background: #2563eb;
         }
 
         /* Speakers Grid */
@@ -1323,7 +1342,9 @@
                     <div class="modal-session-speaker">👤 Prof. Michael Zhang, IBM Research</div>
                     <div class="modal-session-actions">
                         <button class="btn-primary live">Join</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
+                        <button class="bookmark-btn bookmarked">
+                            <div class="bookmark-icon"></div>
+                        </button>
                     </div>
                 </div>
                 <div class="modal-session-item">
@@ -1335,7 +1356,9 @@
                     <div class="modal-session-speaker">👤 James Wilson, Microsoft Security</div>
                     <div class="modal-session-actions">
                         <button class="btn-secondary">Start in 1 hour</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
+                        <button class="bookmark-btn bookmarked">
+                            <div class="bookmark-icon"></div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1725,12 +1748,12 @@
                                 onclick="handleSessionAction('${session.status}', ${session.id})">
                             ${session.status === 'live' ? 'Join' : 
                               session.status === 'finished' ? 'Watch Recording' : 
-                              currentDay === 2 ? 'View Details' : 'Start in 2 hour'}
+                              currentDay === 2 ? 'View Details' : 'Start in 1 hour'}
                         </button>
                         <button class="bookmark-btn ${session.bookmarked ? 'bookmarked' : ''}" 
                                 onclick="toggleBookmark(${session.id})" 
                                 title="${session.bookmarked ? 'Remove bookmark' : 'Add bookmark'}">
-                            ${session.bookmarked ? '🔖' : '📑'}
+                            <div class="bookmark-icon"></div>
                         </button>
                     </div>
                 </div>
