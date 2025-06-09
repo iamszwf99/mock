@@ -59,13 +59,6 @@
             background: rgba(255,255,255,0.3);
         }
 
-        .day-dot {
-            width: 8px;
-            height: 8px;
-            background: #fbbf24;
-            border-radius: 50%;
-        }
-
         .live-dot {
             width: 8px;
             height: 8px;
@@ -219,11 +212,84 @@
             padding: 40px;
         }
 
+        /* Day Toggle */
+        .day-toggle {
+            display: flex;
+            background: #f3f4f6;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 30px;
+            width: fit-content;
+        }
+
+        .day-btn {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .day-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Combined Search and Filter Component */
+        .search-filter-container {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .search-filter-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-filter-header:hover {
+            background: #f9fafb;
+        }
+
+        .search-filter-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .expand-icon {
+            font-size: 20px;
+            color: #6b7280;
+            transition: transform 0.3s ease;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+        }
+
+        .search-filter-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .search-filter-content.expanded {
+            max-height: 500px;
+        }
+
         /* Track Tabs */
         .track-tabs {
-            background: white;
             border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 20px;
             overflow-x: auto;
         }
 
@@ -231,7 +297,7 @@
             display: flex;
             gap: 0;
             min-width: max-content;
-            padding: 0 40px;
+            padding: 0 20px;
         }
 
         .track-tab {
@@ -256,11 +322,7 @@
 
         /* Enhanced Search and Filters */
         .search-filters {
-            background: white;
-            border-radius: 12px;
             padding: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
         .search-row {
@@ -605,32 +667,6 @@
             font-weight: 500;
         }
 
-        /* Day Toggle */
-        .day-toggle {
-            display: flex;
-            background: #f3f4f6;
-            border-radius: 10px;
-            padding: 4px;
-            margin-bottom: 30px;
-            width: fit-content;
-        }
-
-        .day-btn {
-            padding: 12px 24px;
-            border: none;
-            background: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .day-btn.active {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
         /* Featured Badge */
         .featured-badge {
             position: absolute;
@@ -794,6 +830,10 @@
                 padding: 16px;
             }
 
+            .search-filter-content.expanded {
+                max-height: 600px;
+            }
+
             .search-row {
                 flex-direction: column;
                 align-items: stretch;
@@ -812,7 +852,7 @@
             }
 
             .track-tabs-container {
-                padding: 0 20px;
+                padding: 0 16px;
             }
 
             .masthead {
@@ -887,71 +927,80 @@
     </div>
 
     <div class="content">
-        <!-- Track Tabs -->
-        <div class="track-tabs">
-            <div class="track-tabs-container">
-                <div class="track-tab active">All tracks</div>
-                <div class="track-tab">The Critical few</div>
-                <div class="track-tab">The SMB Stack</div>
-                <div class="track-tab">Verticals in Focus</div>
-                <div class="track-tab">Ecosystem in Action</div>
-                <div class="track-tab">YOUtopia</div>
-                <div class="track-tab">Industry Innovation Exchange</div>
-            </div>
-        </div>
-
         <!-- Day Toggle -->
         <div class="day-toggle">
             <button class="day-btn active" onclick="switchDay(1)">Day 1 - March 15</button>
             <button class="day-btn" onclick="switchDay(2)">Day 2 - March 16</button>
         </div>
 
-        <!-- Enhanced Search and Filters -->
-        <div class="search-filters">
-            <div class="search-row">
-                <div class="enhanced-search">
-                    <input type="text" id="searchInput" placeholder="Search Sessions">
-                    <span class="search-icon">🔍</span>
-                </div>
-                <div class="filter-dropdown">
-                    <select id="dayFilter">
-                        <option value="">Day</option>
-                        <option value="day1">Day 1</option>
-                        <option value="day2">Day 2</option>
-                    </select>
-                </div>
-                <div class="filter-dropdown">
-                    <select id="productFilter">
-                        <option value="">Products</option>
-                        <option value="ai">AI & ML</option>
-                        <option value="cloud">Cloud</option>
-                        <option value="security">Security</option>
-                    </select>
-                </div>
-                <div class="filter-dropdown">
-                    <select id="levelFilter">
-                        <option value="">Levels</option>
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
-                    </select>
-                </div>
-                <div class="filter-dropdown">
-                    <select id="categoryFilter">
-                        <option value="">Categories</option>
-                        <option value="keynote">Keynote</option>
-                        <option value="workshop">Workshop</option>
-                        <option value="panel">Panel</option>
-                    </select>
-                </div>
-                <button class="action-btn">📅 Download Schedule</button>
+        <!-- Combined Search and Filter Component -->
+        <div class="search-filter-container">
+            <div class="search-filter-header" onclick="toggleSearchFilter()">
+                <div class="search-filter-title">Search & Filter Sessions</div>
+                <div class="expand-icon" id="expandIcon">▼</div>
             </div>
-            <div class="quick-filter-chips">
-                <div class="filter-chip active" onclick="filterSessions('all')">All Sessions</div>
-                <div class="filter-chip" id="liveFilterChip" onclick="filterSessions('live')">Live Now</div>
-                <div class="filter-chip" onclick="filterSessions('future')">Upcoming</div>
-                <div class="filter-chip" onclick="filterSessions('featured')">Featured</div>
-                <div class="filter-chip" onclick="filterSessions('bookmarked')">My Bookmarks</div>
+            <div class="search-filter-content" id="searchFilterContent">
+                <!-- Track Tabs -->
+                <div class="track-tabs">
+                    <div class="track-tabs-container">
+                        <div class="track-tab active">All tracks</div>
+                        <div class="track-tab">The Critical few</div>
+                        <div class="track-tab">The SMB Stack</div>
+                        <div class="track-tab">Verticals in Focus</div>
+                        <div class="track-tab">Ecosystem in Action</div>
+                        <div class="track-tab">YOUtopia</div>
+                        <div class="track-tab">Industry Innovation Exchange</div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Search and Filters -->
+                <div class="search-filters">
+                    <div class="search-row">
+                        <div class="enhanced-search">
+                            <input type="text" id="searchInput" placeholder="Search Sessions">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <div class="filter-dropdown">
+                            <select id="dayFilter">
+                                <option value="">Day</option>
+                                <option value="day1">Day 1</option>
+                                <option value="day2">Day 2</option>
+                            </select>
+                        </div>
+                        <div class="filter-dropdown">
+                            <select id="productFilter">
+                                <option value="">Products</option>
+                                <option value="ai">AI & ML</option>
+                                <option value="cloud">Cloud</option>
+                                <option value="security">Security</option>
+                            </select>
+                        </div>
+                        <div class="filter-dropdown">
+                            <select id="levelFilter">
+                                <option value="">Levels</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="filter-dropdown">
+                            <select id="categoryFilter">
+                                <option value="">Categories</option>
+                                <option value="keynote">Keynote</option>
+                                <option value="workshop">Workshop</option>
+                                <option value="panel">Panel</option>
+                            </select>
+                        </div>
+                        <button class="action-btn">📅 Download Schedule</button>
+                    </div>
+                    <div class="quick-filter-chips">
+                        <div class="filter-chip active" onclick="filterSessions('all')">All Sessions</div>
+                        <div class="filter-chip" id="liveFilterChip" onclick="filterSessions('live')">Live Now</div>
+                        <div class="filter-chip" onclick="filterSessions('future')">Upcoming</div>
+                        <div class="filter-chip" onclick="filterSessions('featured')">Featured</div>
+                        <div class="filter-chip" onclick="filterSessions('bookmarked')">My Bookmarks</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1119,92 +1168,6 @@
                         <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">2:00 PM - 3:00 PM</div>
-                        <div class="modal-session-status status-future">Upcoming</div>
-                    </div>
-                    <div class="modal-session-title">The Future of Autonomous Vehicles</div>
-                    <div class="modal-session-speaker">👤 David Chen, Tesla Autopilot</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">Start in 1 hour</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
-                    </div>
-                </div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">4:00 PM - 5:00 PM</div>
-                        <div class="modal-session-status status-future">Upcoming</div>
-                    </div>
-                    <div class="modal-session-title">Web3 & Decentralized Applications</div>
-                    <div class="modal-session-speaker">👤 Alex Kumar, Coinbase</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">Start in 1 hour</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
-                    </div>
-                </div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">8:00 AM - 9:00 AM</div>
-                        <div class="modal-session-status status-finished">Ended</div>
-                    </div>
-                    <div class="modal-session-title">DevOps & Cloud Infrastructure</div>
-                    <div class="modal-session-speaker">👤 Tom Anderson, Docker</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">Watch Recording</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
-                    </div>
-                </div>
-                <!-- Day 2 bookmarks -->
-                <div style="font-weight: bold; color: #6b7280; margin: 20px 0 10px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">Day 2 Bookmarks</div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">9:00 AM - 10:00 AM</div>
-                        <div class="modal-session-status status-future">Tomorrow</div>
-                    </div>
-                    <div class="modal-session-title">Advanced Machine Learning Operations</div>
-                    <div class="modal-session-speaker">👤 Dr. Amanda White, Netflix</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
-                    </div>
-                </div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">2:00 PM - 3:00 PM</div>
-                        <div class="modal-session-status status-future">Tomorrow</div>
-                    </div>
-                    <div class="modal-session-title">Privacy-Preserving AI Systems</div>
-                    <div class="modal-session-speaker">👤 Dr. Kevin Park, Apple</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
-                    </div>
-                </div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">11:00 AM - 12:00 PM</div>
-                        <div class="modal-session-status status-future">Tomorrow</div>
-                    </div>
-                    <div class="modal-session-title">Advanced Kubernetes Orchestration</div>
-                    <div class="modal-session-speaker">👤 Sarah Johnson, Google Kubernetes</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
-                    </div>
-                </div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">3:30 PM - 4:30 PM</div>
-                        <div class="modal-session-status status-future">Tomorrow</div>
-                    </div>
-                    <div class="modal-session-title">Distributed Systems Patterns</div>
-                    <div class="modal-session-speaker">👤 Michael Zhang, Uber Engineering</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">View Details</button>
-                        <button class="bookmark-btn bookmarked">🔖</button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -1262,16 +1225,6 @@
                     status: "future",
                     featured: false,
                     bookmarked: true
-                },
-                {
-                    id: 6,
-                    title: "Serverless Architecture Patterns",
-                    time: "1:00 PM - 2:00 PM",
-                    speakers: "Rachel Kim, AWS",
-                    description: "Advanced serverless design patterns for scalable cloud applications.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: false
                 },
                 {
                     id: 7,
@@ -1333,16 +1286,6 @@
                     status: "finished",
                     featured: false,
                     bookmarked: false
-                },
-                {
-                    id: 13,
-                    title: "API Design & Microservices",
-                    time: "9:00 AM - 10:00 AM",
-                    speakers: "Marcus Brown, Stripe",
-                    description: "Scalable API architecture and service-oriented design patterns.",
-                    status: "finished",
-                    featured: false,
-                    bookmarked: false
                 }
             ],
             day2: [
@@ -1395,56 +1338,6 @@
                     status: "future",
                     featured: false,
                     bookmarked: true
-                },
-                {
-                    id: 26,
-                    title: "WebAssembly & Edge Computing",
-                    time: "12:30 PM - 1:30 PM",
-                    speakers: "Alex Turner, Fastly",
-                    description: "High-performance computing at the edge with WebAssembly and distributed architectures.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: false
-                },
-                {
-                    id: 27,
-                    title: "Advanced React Performance",
-                    time: "1:00 PM - 2:00 PM",
-                    speakers: "Emily Chen, Meta React Team",
-                    description: "Concurrent features, server components, and optimization techniques for large-scale applications.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: false
-                },
-                {
-                    id: 28,
-                    title: "Distributed Systems Patterns",
-                    time: "3:30 PM - 4:30 PM",
-                    speakers: "Michael Zhang, Uber Engineering",
-                    description: "Event sourcing, CQRS, saga patterns, and building resilient distributed architectures.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: true
-                },
-                {
-                    id: 29,
-                    title: "Zero-Trust Security Architecture",
-                    time: "2:30 PM - 3:30 PM",
-                    speakers: "Lisa Rodriguez, Okta",
-                    description: "Identity-centric security models and implementing zero-trust principles at scale.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: false
-                },
-                {
-                    id: 30,
-                    title: "Quantum-Safe Cryptography",
-                    time: "5:00 PM - 6:00 PM",
-                    speakers: "Dr. James Wilson, IBM Quantum",
-                    description: "Post-quantum cryptographic algorithms and preparing for the quantum computing era.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: false
                 }
             ]
         };
@@ -1480,6 +1373,14 @@
 
         function setupEventListeners() {
             // Add event listeners as needed
+        }
+
+        function toggleSearchFilter() {
+            const content = document.getElementById('searchFilterContent');
+            const icon = document.getElementById('expandIcon');
+            
+            content.classList.toggle('expanded');
+            icon.classList.toggle('expanded');
         }
 
         function switchDay(day) {
@@ -1566,7 +1467,6 @@
             const featuredSection = document.getElementById('featured-section');
             const finishedSection = document.getElementById('finished-section');
             const moreSessionsSection = document.getElementById('more-sessions');
-            const speakersSection = document.getElementById('speakers-section');
             
             if (currentDay === 1) {
                 liveSection.style.display = 'block';
