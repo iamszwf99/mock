@@ -30,224 +30,126 @@
             z-index: 100;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
         .logo {
             font-size: 28px;
             font-weight: bold;
             color: white;
         }
 
-        .header-nav {
+        .header-info {
             display: flex;
+            align-items: center;
             gap: 30px;
+            color: white;
         }
 
-        .header-nav-tab {
-            padding: 8px 0;
-            font-weight: 500;
-            color: rgba(255,255,255,0.8);
+        .event-day-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
             cursor: pointer;
-            border-bottom: 2px solid transparent;
             transition: all 0.3s ease;
+        }
+
+        .event-day-indicator:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .day-dot {
+            width: 8px;
+            height: 8px;
+            background: #fbbf24;
+            border-radius: 50%;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .countdown-timer {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            margin: 30px auto 0;
+            max-width: 400px;
+            display: none;
+        }
+
+        .countdown-timer.show {
+            display: block;
+        }
+
+        .countdown-label {
             font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.8;
         }
 
-        .header-nav-tab.active {
-            color: white;
-            border-bottom-color: white;
+        .countdown-time {
+            font-size: 32px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
         }
 
-        .header-nav-tab:hover {
-            color: white;
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
-            color: white;
         }
 
-        /* Header Search Filter */
-        .header-search-filter {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-        }
-
-        .header-search-container {
-            position: relative;
-            width: 250px;
-        }
-
-        .header-search-input {
-            width: 100%;
-            padding: 8px 12px 8px 35px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
+        .bookmark-count {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
             font-size: 14px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-search-input::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
-
-        .header-search-input:focus {
-            outline: none;
-            border-color: rgba(255,255,255,0.6);
-            background: rgba(255,255,255,0.15);
-        }
-
-        .header-search-icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.7);
-            font-size: 14px;
-        }
-
-        .header-expand-btn {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            padding: 8px 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            backdrop-filter: blur(10px);
         }
 
-        .header-expand-btn:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.5);
+        .bookmark-count:hover {
+            background: rgba(255,255,255,0.3);
         }
 
-        .header-expand-btn.expanded {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border-color: rgba(255,255,255,0.6);
-        }
-
-        /* Header Dropdown Filter Panel */
-        .header-filter-dropdown-panel {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
+        /* Navigation Tabs */
+        .nav-tabs {
             background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            padding: 20px;
-            width: 600px;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(-10px);
-            pointer-events: none;
-            transition: all 0.3s ease;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 40px;
+            display: flex;
+            gap: 40px;
         }
 
-        .header-filter-dropdown-panel.expanded {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: all;
-        }
-
-        .filter-panel-title {
-            font-size: 16px;
+        .nav-tab {
+            padding: 15px 0;
             font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 16px;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .filter-dropdown-compact {
-            min-width: 120px;
-        }
-
-        .filter-dropdown-compact select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
-            font-size: 13px;
-            background: white;
+            color: #6b7280;
             cursor: pointer;
-            color: #374151;
-        }
-
-        .filter-dropdown-compact select:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-
-        .filter-chips-compact {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .filter-chip-compact {
-            padding: 6px 12px;
-            border: 2px solid #e5e7eb;
-            background: white;
-            border-radius: 16px;
-            cursor: pointer;
-            font-weight: 500;
+            border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
-            font-size: 13px;
         }
 
-        .filter-chip-compact.active {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
         }
 
-        .filter-chip-compact:hover {
-            border-color: #2563eb;
-        }
-
-        .action-btn-compact {
-            padding: 8px 16px;
-            background: #f3f4f6;
-            border: 2px solid #d1d5db;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 13px;
-            color: #374151;
-        }
-
-        .action-btn-compact:hover {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
+        .nav-tab:hover {
+            color: #667eea;
         }
 
         /* Masthead */
@@ -310,32 +212,6 @@
             opacity: 0.8;
         }
 
-        .countdown-timer {
-            background: rgba(255,255,255,0.2);
-            padding: 20px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            margin: 30px auto 0;
-            max-width: 400px;
-            display: none;
-        }
-
-        .countdown-timer.show {
-            display: block;
-        }
-
-        .countdown-label {
-            font-size: 14px;
-            margin-bottom: 10px;
-            opacity: 0.8;
-        }
-
-        .countdown-time {
-            font-size: 32px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-        }
-
         /* Content Container */
         .content {
             max-width: 1400px;
@@ -343,89 +219,113 @@
             padding: 40px;
         }
 
-        /* Day Toggle Row */
-        .day-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        /* Day Toggle */
-        .day-toggle {
-            display: flex;
-            background: #f3f4f6;
-            border-radius: 10px;
-            padding: 4px;
-        }
-
-        .day-btn {
-            padding: 12px 24px;
-            border: none;
-            background: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .day-btn.active {
+        /* Search/Filter Styles */
+        .tracks-tabs {
             background: white;
-            color: #667eea;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 0 40px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
         }
 
-        /* Session Indicators */
-        .session-indicators {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .event-day-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #f3f4f6;
-            padding: 8px 16px;
-            border-radius: 20px;
+        .track-tab {
+            padding: 15px 20px;
+            font-weight: 500;
+            color: #6b7280;
             cursor: pointer;
+            border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
-            border: 2px solid #e5e7eb;
-        }
-
-        .event-day-indicator:hover {
-            background: #e5e7eb;
-            border-color: #d1d5db;
-        }
-
-        .live-dot {
-            width: 8px;
-            height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .bookmark-count {
-            background: #f3f4f6;
-            padding: 8px 16px;
-            border-radius: 20px;
+            white-space: nowrap;
             font-size: 14px;
+        }
+
+        .track-tab.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+
+        .track-tab:hover {
+            color: #2563eb;
+            background: #f8fafc;
+        }
+
+        .search-filters {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 16px;
+        }
+
+        .filter-dropdown {
+            position: relative;
+        }
+
+        .filter-select {
+            appearance: none;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 35px 10px 15px;
+            font-size: 14px;
+            color: #374151;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid #e5e7eb;
+            min-width: 120px;
         }
 
-        .bookmark-count:hover {
-            background: #e5e7eb;
-            border-color: #d1d5db;
+        .filter-select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .filter-dropdown::after {
+            content: '▼';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 12px;
+            pointer-events: none;
         }
 
         /* Section Headers */
@@ -481,6 +381,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .session-card:hover {
@@ -599,38 +500,19 @@
         .bookmark-btn {
             background: none;
             border: none;
+            font-size: 20px;
             cursor: pointer;
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
             transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .bookmark-btn:hover {
             background: #f3f4f6;
         }
 
-        .bookmark-btn:hover .bookmark-icon {
-            background: #9ca3af;
-        }
-
-        .bookmark-btn.bookmarked:hover .bookmark-icon {
-            background: #1d4ed8;
-        }
-
-        .bookmark-icon {
-            width: 16px;
-            height: 18px;
-            background: #d1d5db;
-            transition: all 0.3s ease;
-            clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 50% 100%, 0% 75%);
-        }
-
-        .bookmark-btn.bookmarked .bookmark-icon {
-            background: #2563eb;
+        .bookmark-btn.bookmarked {
+            color: #2563eb;
         }
 
         /* Speakers Grid */
@@ -647,6 +529,7 @@
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .speaker-card:hover {
@@ -686,6 +569,32 @@
             font-weight: 500;
         }
 
+        /* Day Toggle */
+        .day-toggle {
+            display: flex;
+            background: #f3f4f6;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 30px;
+            width: fit-content;
+        }
+
+        .day-btn {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .day-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
         /* Featured Badge */
         .featured-badge {
             position: absolute;
@@ -700,58 +609,348 @@
             text-transform: uppercase;
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6b7280;
-        }
-
-        .empty-state h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        /* Modal/Dropdown */
+        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
             display: none;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
         }
 
         .modal {
             background: white;
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 20px;
             max-width: 800px;
-            max-height: 80vh;
+            width: 90%;
+            max-height: 90vh;
             overflow-y: auto;
-            margin: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .modal.fullscreen {
+            max-width: 95%;
+            max-height: 95vh;
+            width: 95%;
+        }
+
+        .modal.speaker-card {
+            max-width: 500px;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e5e7eb;
         }
 
         .modal-title {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: #1f2937;
         }
 
+        .modal-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-modal-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-modal-primary:hover {
+            background: #5046e4;
+        }
+
+        .btn-modal-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-modal-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .btn-close:hover {
+            background: #f3f4f6;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .video-container {
+            position: relative;
+            margin-bottom: 20px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .video-controls {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            right: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .video-nav {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .video-nav:hover {
+            background: white;
+        }
+
+        .video-info {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .addon-media {
+            text-align: center;
+            margin: 15px 0;
+            color: #6366f1;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .addon-media:hover {
+            text-decoration: underline;
+        }
+
+        .session-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .detail-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #1f2937;
+        }
+
+        .speaker-intro {
+            cursor: pointer;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .speaker-intro:hover {
+            background: #e2e8f0;
+        }
+
+        .speaker-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .speaker-detail-title {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .resources {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .resource-item:hover {
+            background: #e2e8f0;
+        }
+
+        .resource-icon {
+            width: 20px;
+            height: 20px;
+            background: #6366f1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* Speaker Card Styles */
+        .speaker-card-content {
+            text-align: center;
+        }
+
+        .speaker-modal-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .speaker-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #1f2937;
+        }
+
+        .speaker-info .title {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .speaker-info .company {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .speaker-bio {
+            text-align: left;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 25px;
+        }
+
+        .speaker-sessions h3 {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .session-list {
+            text-align: left;
+        }
+
+        .session-item {
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .session-item:hover {
+            background: #e2e8f0;
+        }
+
+        .session-item-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .session-item-time {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Basic modal styles for existing modals */
         .close-btn {
             background: none;
             border: none;
@@ -837,66 +1036,6 @@
                 gap: 15px;
             }
 
-            .header-left {
-                flex-direction: column;
-                gap: 20px;
-                align-items: center;
-            }
-
-            .header-right {
-                flex-direction: column;
-                gap: 15px;
-                align-items: center;
-                width: 100%;
-            }
-
-            .header-nav {
-                gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .header-search-filter {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .header-search-container {
-                width: 200px;
-            }
-
-            .header-filter-dropdown-panel {
-                width: 90vw;
-                right: auto;
-                left: 50%;
-                transform: translateX(-50%) translateY(-10px);
-            }
-
-            .header-filter-dropdown-panel.expanded {
-                transform: translateX(-50%) translateY(0);
-            }
-
-            .filter-row {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-            }
-
-            .filter-dropdown-compact {
-                min-width: auto;
-            }
-
-            .day-row {
-                flex-direction: column;
-                gap: 20px;
-                align-items: center;
-            }
-
-            .session-indicators {
-                flex-direction: column;
-                gap: 10px;
-            }
-
             .content {
                 padding: 20px;
             }
@@ -922,81 +1061,36 @@
                 margin: 10px;
                 max-height: 90vh;
             }
+            
+            .session-details {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="header-left">
-            <div class="logo">TechConnect 2024</div>
-            <div class="header-nav">
-                <div class="header-nav-tab active">Lobby</div>
-                <div class="header-nav-tab">My Agenda</div>
-                <div class="header-nav-tab">All Sessions</div>
-                <div class="header-nav-tab">Speakers</div>
-                <div class="header-nav-tab">Networking</div>
-            </div>
-        </div>
-        <div class="header-right">
-            <!-- Header Search and Filter -->
-            <div class="header-search-filter">
-                <div class="header-search-container">
-                    <input type="text" class="header-search-input" id="searchInput" placeholder="Search Sessions">
-                    <span class="header-search-icon">🔍</span>
-                </div>
-                <button class="header-expand-btn" id="headerExpandBtn" onclick="toggleHeaderFilter()">⚙️</button>
-                
-                <!-- Header Filter Dropdown Panel -->
-                <div class="header-filter-dropdown-panel" id="headerFilterDropdownPanel">
-                    <div class="filter-panel-title">Filter Options</div>
-                    <div class="filter-row">
-                        <div class="filter-dropdown-compact">
-                            <select id="dayFilter">
-                                <option value="">Day</option>
-                                <option value="day1">Day 1</option>
-                                <option value="day2">Day 2</option>
-                            </select>
-                        </div>
-                        <div class="filter-dropdown-compact">
-                            <select id="productFilter">
-                                <option value="">Products</option>
-                                <option value="ai">AI & ML</option>
-                                <option value="cloud">Cloud</option>
-                                <option value="security">Security</option>
-                            </select>
-                        </div>
-                        <div class="filter-dropdown-compact">
-                            <select id="levelFilter">
-                                <option value="">Levels</option>
-                                <option value="beginner">Beginner</option>
-                                <option value="intermediate">Intermediate</option>
-                                <option value="advanced">Advanced</option>
-                            </select>
-                        </div>
-                        <div class="filter-dropdown-compact">
-                            <select id="categoryFilter">
-                                <option value="">Categories</option>
-                                <option value="keynote">Keynote</option>
-                                <option value="workshop">Workshop</option>
-                                <option value="panel">Panel</option>
-                            </select>
-                        </div>
-                        <button class="action-btn-compact">📅 Download</button>
-                    </div>
-                    <div class="filter-chips-compact">
-                        <div class="filter-chip-compact active" onclick="filterSessions('all')">All Sessions</div>
-                        <div class="filter-chip-compact" id="liveFilterChip" onclick="filterSessions('live')">Live Now</div>
-                        <div class="filter-chip-compact" onclick="filterSessions('future')">Upcoming</div>
-                        <div class="filter-chip-compact" onclick="filterSessions('featured')">Featured</div>
-                        <div class="filter-chip-compact" onclick="filterSessions('bookmarked')">My Bookmarks</div>
-                    </div>
-                </div>
+        <div class="logo">TechConnect 2024</div>
+        <div class="header-info">
+            <div class="event-day-indicator" id="dayIndicator" onclick="showLiveSessionsModal()">
+                <div class="live-dot" id="indicatorDot"></div>
+                <span id="indicatorText">3 sessions live now</span>
             </div>
             <div class="user-info">
+                <div class="bookmark-count" onclick="showBookmarkedSessionsModal()">🔖 <span id="bookmarkCount">7</span> bookmarked</div>
                 <div style="font-size: 14px;">Welcome, Alex Chen</div>
             </div>
         </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <div class="nav-tab active">Lobby</div>
+        <div class="nav-tab">My Agenda</div>
+        <div class="nav-tab">All Sessions</div>
+        <div class="nav-tab">Speakers</div>
+        <div class="nav-tab">Networking</div>
     </div>
 
     <!-- Masthead -->
@@ -1026,47 +1120,61 @@
     </div>
 
     <div class="content">
-        <!-- Day Toggle Row with Session Indicators -->
-        <div class="day-row">
-            <div class="day-toggle">
-                <button class="day-btn active" onclick="switchDay(1)">Day 1 - March 15</button>
-                <button class="day-btn" onclick="switchDay(2)">Day 2 - March 16</button>
-            </div>
-            
-            <div class="session-indicators">
-                <div class="event-day-indicator" id="dayIndicator" onclick="showLiveSessionsModal()">
-                    <div class="live-dot" id="indicatorDot"></div>
-                    <span id="indicatorText">3 sessions live now</span>
-                </div>
-                <div class="bookmark-count" onclick="showBookmarkedSessionsModal()">📚 <span id="bookmarkCount">7</span> bookmarked</div>
-            </div>
+        <!-- Day Toggle -->
+        <div class="day-toggle">
+            <button class="day-btn active" onclick="switchDay(1)">Day 1 - March 15</button>
+            <button class="day-btn" onclick="switchDay(2)">Day 2 - March 16</button>
         </div>
 
-        <!-- Live Sessions (Priority Section) -->
-        <div class="section" id="live-section">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">Live Now</h2>
-                    <p class="section-subtitle">Join these sessions happening right now</p>
-                </div>
-                <a href="#" class="view-all">View all live →</a>
-            </div>
-            <div class="sessions-grid" id="live-sessions">
-                <!-- Live sessions will be populated here -->
-            </div>
+        <!-- Tracks Tabs -->
+        <div class="tracks-tabs">
+            <div class="track-tab active">All tracks</div>
+            <div class="track-tab">The Critical few</div>
+            <div class="track-tab">The SMB Stack</div>
+            <div class="track-tab">Verticals in Focus</div>
+            <div class="track-tab">Ecosystem in Action</div>
+            <div class="track-tab">TechUtopia</div>
+            <div class="track-tab">Industry Innovation Exchange</div>
         </div>
 
-        <!-- Upcoming Sessions (moved to 2nd row) -->
-        <div class="section" id="upcoming-section">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">Coming Up Next</h2>
-                    <p class="section-subtitle">Sessions starting in the next 2 hours</p>
-                </div>
-                <a href="#" class="view-all">View full schedule →</a>
+        <!-- Search and Filters -->
+        <div class="search-filters">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search Sessions">
+                <span class="search-icon">🔍</span>
             </div>
-            <div class="sessions-grid" id="upcoming-sessions">
-                <!-- Upcoming sessions will be populated here -->
+            <div class="filter-dropdown">
+                <select class="filter-select" id="dayFilter">
+                    <option value="">Day</option>
+                    <option value="day1">Day 1 - March 15</option>
+                    <option value="day2">Day 2 - March 16</option>
+                </select>
+            </div>
+            <div class="filter-dropdown">
+                <select class="filter-select" id="productsFilter">
+                    <option value="">Products</option>
+                    <option value="ai">AI & Machine Learning</option>
+                    <option value="cloud">Cloud Infrastructure</option>
+                    <option value="security">Security</option>
+                    <option value="devops">DevOps</option>
+                </select>
+            </div>
+            <div class="filter-dropdown">
+                <select class="filter-select" id="levelsFilter">
+                    <option value="">Levels</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+            <div class="filter-dropdown">
+                <select class="filter-select" id="categoriesFilter">
+                    <option value="">Categories</option>
+                    <option value="keynote">Keynote</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="panel">Panel Discussion</option>
+                    <option value="demo">Demo</option>
+                </select>
             </div>
         </div>
 
@@ -1081,6 +1189,48 @@
             </div>
             <div class="sessions-grid" id="featured-sessions">
                 <!-- Featured sessions will be populated here -->
+            </div>
+        </div>
+
+        <!-- Featured Speakers -->
+        <div class="section" id="speakers-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Featured Speakers</h2>
+                    <p class="section-subtitle">Meet our amazing lineup of industry experts</p>
+                </div>
+                <a href="#" class="view-all">View all speakers →</a>
+            </div>
+            <div class="speakers-grid" id="featured-speakers">
+                <!-- Speakers will be populated here -->
+            </div>
+        </div>
+
+        <!-- Live Sessions -->
+        <div class="section" id="live-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Live Now</h2>
+                    <p class="section-subtitle">Join these sessions happening right now</p>
+                </div>
+                <a href="#" class="view-all">View all live →</a>
+            </div>
+            <div class="sessions-grid" id="live-sessions">
+                <!-- Live sessions will be populated here -->
+            </div>
+        </div>
+
+        <!-- Upcoming Sessions -->
+        <div class="section" id="upcoming-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Coming Up Next</h2>
+                    <p class="section-subtitle">Sessions starting in the next 2 hours</p>
+                </div>
+                <a href="#" class="view-all">View full schedule →</a>
+            </div>
+            <div class="sessions-grid" id="upcoming-sessions">
+                <!-- Upcoming sessions will be populated here -->
             </div>
         </div>
 
@@ -1111,18 +1261,102 @@
                 <!-- Finished sessions will be populated here -->
             </div>
         </div>
+    </div>
 
-        <!-- Featured Speakers (moved to bottom during event) -->
-        <div class="section" id="speakers-section">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">Featured Speakers</h2>
-                    <p class="section-subtitle">Meet our amazing lineup of industry experts</p>
+    <!-- Session Detail Modal -->
+    <div class="modal-overlay" id="sessionModal">
+        <div class="modal" id="sessionModalContent">
+            <div class="modal-header">
+                <div class="modal-title" id="sessionModalTitle">Session Title</div>
+                <div class="modal-controls">
+                    <button class="btn btn-modal-secondary" onclick="bookmarkSessionModal()">📑 Bookmark</button>
+                    <button class="btn btn-modal-primary" onclick="expandSession()">⛶ Expand</button>
+                    <button class="btn-close" onclick="closeModal('sessionModal')">&times;</button>
                 </div>
-                <a href="#" class="view-all">View all speakers →</a>
             </div>
-            <div class="speakers-grid" id="featured-speakers">
-                <!-- Speakers will be populated here -->
+            <div class="modal-body">
+                <div class="video-container">
+                    <div class="video-player" id="videoPlayer">
+                        <div class="video-controls">
+                            <button class="video-nav" onclick="previousVideo()">‹</button>
+                            <div class="video-info" id="videoInfo">
+                                Main Presentation Video (1/5)
+                            </div>
+                            <button class="video-nav" onclick="nextVideo()">›</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="addon-media" onclick="showAddonMedia()">
+                    4 more add-on media >
+                </div>
+
+                <div class="session-details">
+                    <div class="detail-section">
+                        <h3>Speaker</h3>
+                        <div class="speaker-intro" id="speakerIntro" onclick="openSpeakerCard()">
+                            <div class="speaker-name" id="speakerName">Dr. Sarah Chen</div>
+                            <div class="speaker-detail-title" id="speakerDetailTitle">Senior AI Research Scientist at TechCorp</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Resources</h3>
+                        <div class="resources">
+                            <div class="resource-item" onclick="downloadResource('slides')">
+                                <div class="resource-icon">📄</div>
+                                <span>Session Slides.pdf</span>
+                            </div>
+                            <div class="resource-item" onclick="downloadResource('code')">
+                                <div class="resource-icon">💻</div>
+                                <span>Code Examples.zip</span>
+                            </div>
+                            <div class="resource-item" onclick="downloadResource('recording')">
+                                <div class="resource-icon">🎥</div>
+                                <span>Full Recording.mp4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Description</h3>
+                    <p id="sessionDescription">
+                        In this comprehensive session, we'll explore the cutting-edge developments in artificial intelligence and their profound impact on software development practices.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Speaker Modal -->
+    <div class="modal-overlay" id="speakerModal">
+        <div class="modal speaker-card" id="speakerModalContent">
+            <div class="modal-header">
+                <div class="modal-title">Speaker Profile</div>
+                <div class="modal-controls">
+                    <button class="btn btn-modal-primary" onclick="expandSpeaker()">⛶ Expand</button>
+                    <button class="btn-close" onclick="closeModal('speakerModal')">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="speaker-card-content">
+                    <div class="speaker-modal-avatar" id="speakerModalAvatar">SC</div>
+                    <div class="speaker-info">
+                        <h2 id="speakerFullName">Dr. Sarah Chen</h2>
+                        <div class="title" id="speakerFullTitle">Senior AI Research Scientist</div>
+                        <div class="company" id="speakerCompany">TechCorp International</div>
+                    </div>
+                    <div class="speaker-bio" id="speakerBio">
+                        Dr. Sarah Chen is a leading expert in artificial intelligence and machine learning with over 15 years of experience in the field.
+                    </div>
+                    <div class="speaker-sessions">
+                        <h3>Sessions</h3>
+                        <div class="session-list" id="speakerSessionsList">
+                            <!-- Speaker sessions will be populated here -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1191,31 +1425,16 @@
                     <div class="modal-session-speaker">👤 Prof. Michael Zhang, IBM Research</div>
                     <div class="modal-session-actions">
                         <button class="btn-primary live">Join</button>
-                        <button class="bookmark-btn bookmarked">
-                            <div class="bookmark-icon"></div>
-                        </button>
+                        <button class="bookmark-btn bookmarked">🔖</button>
                     </div>
                 </div>
-                <div class="modal-session-item">
-                    <div class="modal-session-meta">
-                        <div class="modal-session-time">12:30 PM - 1:30 PM</div>
-                        <div class="modal-session-status status-future">Upcoming</div>
-                    </div>
-                    <div class="modal-session-title">Cybersecurity in AI Systems</div>
-                    <div class="modal-session-speaker">👤 James Wilson, Microsoft Security</div>
-                    <div class="modal-session-actions">
-                        <button class="btn-secondary">Starts in 1.5 hours</button>
-                        <button class="bookmark-btn bookmarked">
-                            <div class="bookmark-icon"></div>
-                        </button>
-                    </div>
-                </div>
+                <!-- Additional bookmarked sessions... -->
             </div>
         </div>
     </div>
 
     <script>
-        // Sample data for both days
+        // Sample data for both days with enhanced speaker information
         const sessions = {
             day1: [
                 {
@@ -1226,7 +1445,23 @@
                     description: "Exploring cutting-edge neural architecture and their applications in autonomous systems.",
                     status: "live",
                     featured: false,
-                    bookmarked: false
+                    bookmarked: false,
+                    speaker: {
+                        name: 'Dr. Sarah Chen',
+                        title: 'Senior AI Research Scientist at MIT AI Lab',
+                        fullName: 'Dr. Sarah Chen',
+                        fullTitle: 'Senior AI Research Scientist',
+                        company: 'MIT AI Lab',
+                        bio: 'Dr. Sarah Chen is a leading expert in artificial intelligence and machine learning with over 15 years of experience in the field. She holds a PhD in Computer Science from MIT and has published over 50 research papers on AI applications in software development.',
+                        avatar: 'SC'
+                    },
+                    videos: [
+                        'Main Presentation Video',
+                        'Q&A Session',
+                        'Demo: Neural Network Implementation',
+                        'Case Study: Real-world Applications',
+                        'Panel Discussion'
+                    ]
                 },
                 {
                     id: 2,
@@ -1236,7 +1471,23 @@
                     description: "Real-world quantum computing applications in cryptography and optimization.",
                     status: "live",
                     featured: false,
-                    bookmarked: true
+                    bookmarked: true,
+                    speaker: {
+                        name: 'Prof. Michael Zhang',
+                        title: 'Quantum Computing Researcher at IBM Research',
+                        fullName: 'Prof. Michael Zhang',
+                        fullTitle: 'Principal Quantum Computing Researcher',
+                        company: 'IBM Research',
+                        bio: 'Professor Michael Zhang has been at the forefront of quantum computing research for over 12 years. He leads IBM\'s quantum algorithm development team and has contributed to major breakthroughs in quantum supremacy.',
+                        avatar: 'MZ'
+                    },
+                    videos: [
+                        'Quantum Computing Overview',
+                        'Applications in Cryptography',
+                        'Optimization Algorithms',
+                        'Live Quantum Demo',
+                        'Future of Quantum'
+                    ]
                 },
                 {
                     id: 3,
@@ -1246,40 +1497,23 @@
                     description: "Advanced blockchain architecture for enterprise-grade applications.",
                     status: "live",
                     featured: false,
-                    bookmarked: false
-                },
-                {
-                    id: 4,
-                    title: "Edge Computing & IoT Integration",
-                    time: "12:00 PM - 1:00 PM",
-                    speakers: "Dr. Lisa Park, Google Cloud",
-                    description: "Building distributed computing systems for IoT device ecosystems.",
-                    status: "future",
-                    featured: false,
                     bookmarked: false,
-                    startsIn: "1 hour"
-                },
-                {
-                    id: 5,
-                    title: "Cybersecurity in AI Systems",
-                    time: "12:30 PM - 1:30 PM",
-                    speakers: "James Wilson, Microsoft Security",
-                    description: "Protecting AI models from adversarial attacks and data poisoning.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: true,
-                    startsIn: "1.5 hours"
-                },
-                {
-                    id: 6,
-                    title: "Serverless Architecture Patterns",
-                    time: "1:00 PM - 2:00 PM",
-                    speakers: "Rachel Kim, AWS",
-                    description: "Advanced serverless design patterns for scalable cloud applications.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: false,
-                    startsIn: "2 hours"
+                    speaker: {
+                        name: 'Elena Rodriguez',
+                        title: 'Lead Developer at Ethereum Foundation',
+                        fullName: 'Elena Rodriguez',
+                        fullTitle: 'Lead Blockchain Developer',
+                        company: 'Ethereum Foundation',
+                        bio: 'Elena Rodriguez is a core developer at the Ethereum Foundation with expertise in blockchain scalability and smart contract security. She has been instrumental in Ethereum 2.0 development.',
+                        avatar: 'ER'
+                    },
+                    videos: [
+                        'Blockchain Fundamentals',
+                        'Scalability Solutions',
+                        'Enterprise Implementation',
+                        'Security Best Practices',
+                        'Future Roadmap'
+                    ]
                 },
                 {
                     id: 7,
@@ -1290,7 +1524,22 @@
                     status: "future",
                     featured: true,
                     bookmarked: true,
-                    startsIn: "3 hours"
+                    speaker: {
+                        name: 'David Chen',
+                        title: 'Autopilot Lead at Tesla',
+                        fullName: 'David Chen',
+                        fullTitle: 'Senior Director, Autopilot Engineering',
+                        company: 'Tesla',
+                        bio: 'David Chen leads Tesla\'s Autopilot engineering team and has been instrumental in developing Full Self-Driving capabilities. He has over 10 years of experience in autonomous systems.',
+                        avatar: 'DC'
+                    },
+                    videos: [
+                        'Autonomous Driving Overview',
+                        'Safety Systems',
+                        'Machine Learning in Cars',
+                        'Real-world Testing',
+                        'Regulatory Challenges'
+                    ]
                 },
                 {
                     id: 8,
@@ -1301,29 +1550,22 @@
                     status: "future",
                     featured: true,
                     bookmarked: false,
-                    startsIn: "4.5 hours"
-                },
-                {
-                    id: 9,
-                    title: "Web3 & Decentralized Applications",
-                    time: "4:00 PM - 5:00 PM",
-                    speakers: "Alex Kumar, Coinbase",
-                    description: "Building the next generation of decentralized web applications.",
-                    status: "future",
-                    featured: true,
-                    bookmarked: true,
-                    startsIn: "5 hours"
-                },
-                {
-                    id: 10,
-                    title: "AR/VR in Enterprise Applications",
-                    time: "5:00 PM - 6:00 PM",
-                    speakers: "Jennifer Lee, Meta Reality Labs",
-                    description: "Immersive technologies transforming workplace collaboration.",
-                    status: "future",
-                    featured: true,
-                    bookmarked: false,
-                    startsIn: "6 hours"
+                    speaker: {
+                        name: 'Maria Santos',
+                        title: 'Sustainability Lead at Meta',
+                        fullName: 'Maria Santos',
+                        fullTitle: 'Director of Sustainability',
+                        company: 'Meta',
+                        bio: 'Maria Santos leads Meta\'s sustainability initiatives, focusing on renewable energy and carbon-neutral data centers. She has a background in environmental engineering.',
+                        avatar: 'MS'
+                    },
+                    videos: [
+                        'Green Computing Principles',
+                        'Data Center Efficiency',
+                        'Renewable Energy',
+                        'Carbon Footprint Reduction',
+                        'Industry Collaboration'
+                    ]
                 },
                 {
                     id: 11,
@@ -1334,17 +1576,23 @@
                     status: "finished",
                     featured: false,
                     bookmarked: true,
-                    attended: true
-                },
-                {
-                    id: 12,
-                    title: "Data Engineering Best Practices",
-                    time: "8:30 AM - 9:30 AM",
-                    speakers: "Dr. Amy Zhou, Snowflake",
-                    description: "Building robust data pipelines for machine learning workflows.",
-                    status: "finished",
-                    featured: false,
-                    bookmarked: false
+                    attended: true,
+                    speaker: {
+                        name: 'Tom Anderson',
+                        title: 'Principal Engineer at Docker',
+                        fullName: 'Tom Anderson',
+                        fullTitle: 'Principal Software Engineer',
+                        company: 'Docker Inc.',
+                        bio: 'Tom Anderson is a principal engineer at Docker with expertise in containerization and cloud-native applications. He has contributed to major Docker features and speaks at conferences worldwide.',
+                        avatar: 'TA'
+                    },
+                    videos: [
+                        'Container Fundamentals',
+                        'Docker Best Practices',
+                        'Kubernetes Integration',
+                        'CI/CD Pipelines',
+                        'Production Deployment'
+                    ]
                 }
             ],
             day2: [
@@ -1356,47 +1604,23 @@
                     description: "Production-ready ML pipelines, monitoring, and automated model deployment strategies.",
                     status: "future",
                     featured: true,
-                    bookmarked: true
-                },
-                {
-                    id: 22,
-                    title: "Next-Gen Database Technologies",
-                    time: "10:30 AM - 11:30 AM",
-                    speakers: "Robert Kim, MongoDB",
-                    description: "Vector databases, graph computing, and distributed systems for modern applications.",
-                    status: "future",
-                    featured: true,
-                    bookmarked: false
-                },
-                {
-                    id: 23,
-                    title: "Privacy-Preserving AI Systems",
-                    time: "2:00 PM - 3:00 PM",
-                    speakers: "Dr. Kevin Park, Apple",
-                    description: "Federated learning, differential privacy, and secure multi-party computation.",
-                    status: "future",
-                    featured: true,
-                    bookmarked: true
-                },
-                {
-                    id: 24,
-                    title: "The Future of Human-AI Collaboration",
-                    time: "4:00 PM - 5:00 PM",
-                    speakers: "Dr. Maya Patel, OpenAI",
-                    description: "Co-pilot systems, augmented intelligence, and ethical AI interaction design.",
-                    status: "future",
-                    featured: true,
-                    bookmarked: false
-                },
-                {
-                    id: 25,
-                    title: "Advanced Kubernetes Orchestration",
-                    time: "11:00 AM - 12:00 PM",
-                    speakers: "Sarah Johnson, Google Kubernetes",
-                    description: "Multi-cluster management, service mesh integration, and advanced deployment patterns.",
-                    status: "future",
-                    featured: false,
-                    bookmarked: true
+                    bookmarked: true,
+                    speaker: {
+                        name: 'Dr. Amanda White',
+                        title: 'ML Platform Lead at Netflix',
+                        fullName: 'Dr. Amanda White',
+                        fullTitle: 'Senior Director, ML Platform',
+                        company: 'Netflix',
+                        bio: 'Dr. Amanda White leads Netflix\'s machine learning platform team, overseeing the deployment of ML models at scale. She has a PhD in Machine Learning from Stanford.',
+                        avatar: 'AW'
+                    },
+                    videos: [
+                        'MLOps Overview',
+                        'Model Deployment',
+                        'Monitoring & Alerting',
+                        'A/B Testing ML Models',
+                        'Scaling Challenges'
+                    ]
                 }
             ]
         };
@@ -1421,7 +1645,9 @@
         };
 
         let currentDay = 1;
-        let currentFilter = 'all';
+        let currentSession = null;
+        let currentVideoIndex = 0;
+        let isFullscreen = false;
 
         function init() {
             updateDayContent();
@@ -1431,18 +1657,29 @@
         }
 
         function setupEventListeners() {
-            // Add event listeners as needed
+            // Add track tab functionality
+            document.querySelectorAll('.track-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.track-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Add filter functionality
+            const filters = ['dayFilter', 'productsFilter', 'levelsFilter', 'categoriesFilter'];
+            filters.forEach(filterId => {
+                const filter = document.getElementById(filterId);
+                if (filter) {
+                    filter.addEventListener('change', function() {
+                        applyFilters();
+                    });
+                }
+            });
         }
 
-        // Global function to toggle header filter
-        window.toggleHeaderFilter = function() {
-            const panel = document.getElementById('headerFilterDropdownPanel');
-            const btn = document.getElementById('headerExpandBtn');
-            
-            if (panel && btn) {
-                panel.classList.toggle('expanded');
-                btn.classList.toggle('expanded');
-            }
+        function applyFilters() {
+            // Basic filter functionality - can be expanded
+            updateDayContent();
         }
 
         function switchDay(day) {
@@ -1453,18 +1690,12 @@
                 btn.classList.toggle('active', index + 1 === day);
             });
             
-            // Reset filter to "all" when switching days
-            currentFilter = 'all';
-            document.querySelectorAll('.filter-chip-compact').forEach(chip => chip.classList.remove('active'));
-            document.querySelector('.filter-chip-compact').classList.add('active');
-            
             updateDayContent();
         }
 
         function updateDayContent() {
             updateHeader();
             updateMasthead();
-            updateQuickActions();
             updateSections();
             renderSpeakers();
         }
@@ -1509,22 +1740,6 @@
             }
         }
 
-        function updateQuickActions() {
-            const searchInput = document.getElementById('searchInput');
-            const liveFilterChip = document.getElementById('liveFilterChip');
-            
-            if (currentDay === 1) {
-                if (searchInput) searchInput.placeholder = 'Search Sessions';
-                if (liveFilterChip) {
-                    liveFilterChip.style.display = 'block';
-                    liveFilterChip.textContent = 'Live Now';
-                }
-            } else {
-                if (searchInput) searchInput.placeholder = 'Search Day 2 Sessions';
-                if (liveFilterChip) liveFilterChip.style.display = 'none';
-            }
-        }
-
         function updateSections() {
             const liveSection = document.getElementById('live-section');
             const upcomingSection = document.getElementById('upcoming-section');
@@ -1538,8 +1753,11 @@
                 finishedSection.style.display = 'block';
                 moreSessionsSection.style.display = 'none';
                 
-                // Update section title
-                document.querySelector('#featured-section .section-title').textContent = 'Featured Sessions - Day 1';
+                // Update section titles
+                const featuredTitle = document.querySelector('#featured-section .section-title');
+                const featuredSubtitle = document.querySelector('#featured-section .section-subtitle');
+                featuredTitle.textContent = 'Featured Sessions - Day 1';
+                featuredSubtitle.textContent = 'Don\'t miss these highlighted sessions';
                 
                 renderDay1Sessions();
             } else {
@@ -1548,9 +1766,11 @@
                 finishedSection.style.display = 'none';
                 moreSessionsSection.style.display = 'block';
                 
-                // Update section title
-                document.querySelector('#featured-section .section-title').textContent = 'Featured Sessions - Day 2';
-                document.querySelector('#featured-section .section-subtitle').textContent = 'Unmissable advanced sessions for tomorrow';
+                // Update section titles
+                const featuredTitle = document.querySelector('#featured-section .section-title');
+                const featuredSubtitle = document.querySelector('#featured-section .section-subtitle');
+                featuredTitle.textContent = 'Featured Sessions - Day 2';
+                featuredSubtitle.textContent = 'Unmissable advanced sessions for tomorrow';
                 
                 renderDay2Sessions();
             }
@@ -1589,7 +1809,9 @@
             }
 
             container.innerHTML = sessionList.map(session => `
-                <div class="session-card ${session.featured ? 'featured' : ''} ${session.bookmarked ? 'bookmarked' : ''}">
+                <div class="session-card ${session.featured ? 'featured' : ''} ${session.bookmarked ? 'bookmarked' : ''}" 
+                     data-session-id="${session.id}"
+                     onclick="openSessionModal(${session.id})">
                     ${session.featured ? '<div class="featured-badge">Featured</div>' : ''}
                     ${session.attended ? '<div class="attended-badge" style="position: absolute; top: 15px; left: 15px; background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">✓ You attended</div>' : ''}
                     <div class="session-status status-${session.status}">
@@ -1601,18 +1823,17 @@
                     <h3 class="session-title">${session.title}</h3>
                     <div class="session-speakers">👤 ${session.speakers}</div>
                     <div class="session-description">${session.description}</div>
-                    <div class="session-actions">
+                    <div class="session-actions" onclick="event.stopPropagation()">
                         <button class="btn-primary ${session.status === 'live' ? 'live' : session.status === 'finished' ? '' : 'btn-secondary'}" 
                                 onclick="handleSessionAction('${session.status}', ${session.id})">
                             ${session.status === 'live' ? 'Join' : 
                               session.status === 'finished' ? 'Watch Recording' : 
-                              currentDay === 2 ? 'View Details' : 
-                              session.startsIn ? `Starts in ${session.startsIn}` : 'Starts soon'}
+                              currentDay === 2 ? 'View Details' : 'Start in 1 hour'}
                         </button>
                         <button class="bookmark-btn ${session.bookmarked ? 'bookmarked' : ''}" 
                                 onclick="toggleBookmark(${session.id})" 
                                 title="${session.bookmarked ? 'Remove bookmark' : 'Add bookmark'}">
-                            <div class="bookmark-icon"></div>
+                            🔖
                         </button>
                     </div>
                 </div>
@@ -1624,7 +1845,7 @@
             const speakerData = speakers[`day${currentDay}`];
             
             container.innerHTML = speakerData.map(speaker => `
-                <div class="speaker-card">
+                <div class="speaker-card" onclick="openSpeakerCardFromGrid('${speaker.name}')">
                     <div class="speaker-avatar">${speaker.initial}</div>
                     <div class="speaker-name">${speaker.name}</div>
                     <div class="speaker-title">${speaker.title}</div>
@@ -1633,18 +1854,169 @@
             `).join('');
         }
 
-        function filterSessions(filter) {
-            currentFilter = filter;
+        // Session Modal Functions
+        function openSessionModal(sessionId) {
+            // Find session in current day's data
+            let session = null;
+            for (let day in sessions) {
+                session = sessions[day].find(s => s.id === sessionId);
+                if (session) break;
+            }
             
-            // Update filter chips
-            document.querySelectorAll('.filter-chip-compact').forEach(chip => {
-                chip.classList.remove('active');
-            });
-            event.target.classList.add('active');
+            if (!session) return;
             
-            updateSections();
+            currentSession = session;
+            currentVideoIndex = 0;
+            
+            document.getElementById('sessionModalTitle').textContent = session.title;
+            document.getElementById('speakerName').textContent = session.speaker.name;
+            document.getElementById('speakerDetailTitle').textContent = session.speaker.title;
+            document.getElementById('sessionDescription').textContent = session.description;
+            
+            updateVideoPlayer();
+            document.getElementById('sessionModal').classList.add('active');
         }
 
+        function updateVideoPlayer() {
+            if (!currentSession) return;
+            
+            const videoInfo = document.getElementById('videoInfo');
+            videoInfo.textContent = `${currentSession.videos[currentVideoIndex]} (${currentVideoIndex + 1}/${currentSession.videos.length})`;
+        }
+
+        function previousVideo() {
+            if (!currentSession) return;
+            
+            currentVideoIndex = currentVideoIndex > 0 ? currentVideoIndex - 1 : currentSession.videos.length - 1;
+            updateVideoPlayer();
+        }
+
+        function nextVideo() {
+            if (!currentSession) return;
+            
+            currentVideoIndex = currentVideoIndex < currentSession.videos.length - 1 ? currentVideoIndex + 1 : 0;
+            updateVideoPlayer();
+        }
+
+        function showAddonMedia() {
+            alert('Showing additional media files: Demo videos, supplementary materials, and bonus content.');
+        }
+
+        function expandSession() {
+            const modal = document.getElementById('sessionModalContent');
+            modal.classList.toggle('fullscreen');
+            isFullscreen = !isFullscreen;
+            
+            const expandBtn = document.querySelector('#sessionModal .btn-modal-primary');
+            expandBtn.textContent = isFullscreen ? '⤡ Minimize' : '⛶ Expand';
+        }
+
+        function bookmarkSessionModal() {
+            if (currentSession) {
+                currentSession.bookmarked = !currentSession.bookmarked;
+                updateDayContent();
+                alert(currentSession.bookmarked ? 'Session bookmarked!' : 'Bookmark removed!');
+            }
+        }
+
+        function downloadResource(type) {
+            const resources = {
+                slides: 'Session Slides.pdf',
+                code: 'Code Examples.zip',
+                recording: 'Full Recording.mp4'
+            };
+            alert(`Downloading: ${resources[type]}`);
+        }
+
+        // Speaker Modal Functions
+        function openSpeakerCard() {
+            if (!currentSession) return;
+            
+            const speaker = currentSession.speaker;
+            populateSpeakerModal(speaker);
+            document.getElementById('speakerModal').classList.add('active');
+        }
+
+        function openSpeakerCardFromGrid(speakerName) {
+            // Find speaker data from the session data
+            let speakerData = null;
+            for (let day in sessions) {
+                const session = sessions[day].find(s => s.speaker.name === speakerName);
+                if (session) {
+                    speakerData = session.speaker;
+                    break;
+                }
+            }
+            
+            if (speakerData) {
+                populateSpeakerModal(speakerData);
+                document.getElementById('speakerModal').classList.add('active');
+            }
+        }
+
+        function populateSpeakerModal(speaker) {
+            document.getElementById('speakerFullName').textContent = speaker.fullName;
+            document.getElementById('speakerFullTitle').textContent = speaker.fullTitle;
+            document.getElementById('speakerCompany').textContent = speaker.company;
+            document.getElementById('speakerBio').textContent = speaker.bio;
+            document.getElementById('speakerModalAvatar').textContent = speaker.avatar;
+            
+            // Populate speaker sessions
+            const sessionsList = document.getElementById('speakerSessionsList');
+            const speakerSessions = [];
+            
+            // Find all sessions by this speaker
+            for (let day in sessions) {
+                sessions[day].forEach(session => {
+                    if (session.speaker.name === speaker.name) {
+                        speakerSessions.push(session);
+                    }
+                });
+            }
+            
+            sessionsList.innerHTML = speakerSessions.map(session => `
+                <div class="session-item" onclick="openSessionFromSpeaker(${session.id})">
+                    <div class="session-item-title">${session.title}</div>
+                    <div class="session-item-time">${session.time}</div>
+                </div>
+            `).join('');
+        }
+
+        function expandSpeaker() {
+            const modal = document.getElementById('speakerModalContent');
+            modal.classList.toggle('fullscreen');
+            
+            const expandBtn = document.querySelector('#speakerModal .btn-modal-primary');
+            const isExpanded = modal.classList.contains('fullscreen');
+            expandBtn.textContent = isExpanded ? '⤡ Minimize' : '⛶ Expand';
+        }
+
+        function openSessionFromSpeaker(sessionId) {
+            closeModal('speakerModal');
+            setTimeout(() => {
+                openSessionModal(sessionId);
+            }, 300);
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            
+            // Reset fullscreen state
+            if (modalId === 'sessionModal') {
+                document.getElementById('sessionModalContent').classList.remove('fullscreen');
+                isFullscreen = false;
+                const expandBtn = document.querySelector('#sessionModal .btn-modal-primary');
+                if (expandBtn) expandBtn.textContent = '⛶ Expand';
+            }
+            
+            if (modalId === 'speakerModal') {
+                document.getElementById('speakerModalContent').classList.remove('fullscreen');
+                const expandBtn = document.querySelector('#speakerModal .btn-modal-primary');
+                if (expandBtn) expandBtn.textContent = '⛶ Expand';
+            }
+        }
+
+        // Existing functions
         function handleSessionAction(status, sessionId) {
             if (status === 'live') {
                 alert(`Joining live session ${sessionId}...`);
@@ -1716,22 +2088,34 @@
         // Close modals when clicking overlay
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal-overlay')) {
-                e.target.style.display = 'none';
-            }
-            
-            // Close header filter dropdown when clicking outside
-            const filterPanel = document.getElementById('headerFilterDropdownPanel');
-            const expandBtn = document.getElementById('headerExpandBtn');
-            const searchFilter = document.querySelector('.header-search-filter');
-            
-            if (!searchFilter.contains(e.target) && filterPanel.classList.contains('expanded')) {
-                filterPanel.classList.remove('expanded');
-                expandBtn.classList.remove('expanded');
+                if (e.target.id === 'sessionModal') {
+                    closeModal('sessionModal');
+                } else if (e.target.id === 'speakerModal') {
+                    closeModal('speakerModal');
+                } else {
+                    e.target.style.display = 'none';
+                }
             }
         });
 
-        // Close modals with Escape key
+        // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
+            if (document.getElementById('sessionModal').classList.contains('active')) {
+                if (e.key === 'ArrowLeft') {
+                    previousVideo();
+                } else if (e.key === 'ArrowRight') {
+                    nextVideo();
+                } else if (e.key === 'Escape') {
+                    closeModal('sessionModal');
+                }
+            }
+            
+            if (document.getElementById('speakerModal').classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeModal('speakerModal');
+                }
+            }
+            
             if (e.key === 'Escape') {
                 document.getElementById('liveSessionsModal').style.display = 'none';
                 document.getElementById('bookmarkedSessionsModal').style.display = 'none';
